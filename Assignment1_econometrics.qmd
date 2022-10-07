@@ -1,0 +1,47 @@
+---
+title: "Assignment1_econometrics_Malenesr-and-Raojiaxiu"
+format: html
+documentclass: article
+classoption: 
+  - '12pt'
+  - 'a4paper'
+author: 
+  - name: Malene Skurtveit Rossnes
+    affiliation: 'Master Student HVL'
+  - name: Jiaxiu Rao
+    affiliation: 'Master Student HVL'
+editor: visual
+csl: apa-no-ampersand.csl
+bibliography: [.bib]
+abstract: ''
+---
+
+## 
+
+```{r}
+
+library(readr)
+library(ggplot2)
+library(tidyverse)
+library(dplyr)
+
+gdpdata <- read_csv('NAMA_10R_3GDP.csv')
+populationdata <- read_csv('DEMO_R_PJANAGGR3.csv')
+
+gdpq <- gdpdata %>%
+  select(TIME_PERIOD, geo, OBS_VALUE, unit) %>%
+  filter(unit =='MIO_EUR' & geo %in% c('DE', 'FI', 'RO'))
+
+mydata <- gdpq %>%
+  left_join(populationdata, by=c("TIME_PERIOD","geo"),
+            suffix = c("","_population")) %>%
+  filter(age=='TOTAL' & sex=='T')
+
+mydata <- mydata %>% 
+  select(TIME_PERIOD, geo, OBS_VALUE,OBS_VALUE_population 
+        ) #%>% 
+  #head(n = 3)
+
+
+  
+```
