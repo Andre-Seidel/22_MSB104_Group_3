@@ -49,16 +49,24 @@ mydata <- mydata %>%
             suffix = c("","_population")) %>%
    # only rows with TOTAL and T from the population data
   filter(age=='TOTAL' & sex=='T')
+```
 
+## Calculate GDP per capita
+
+```{r}
 mydata <- mydata %>% 
   # select the fields that we need
   select(Year, Country, GDP,Population) %>%
   mutate(GDPpercapita = 1000000 * GDP / Population) 
-
-
 ```
 
-Germany:
+## Describe the data (GDP per capita) using the meta data description from Eurostat.
+
+## Report the essential descriptive statistics for you data set (Mean, Min, Max,..:)
+
+
+
+### Germany:
 
 ```{r}
 mydata %>%
@@ -67,7 +75,7 @@ mydata %>%
   vtable::st(.)
 ```
 
-Finland:
+### Finland:
 
 ```{r}
 
@@ -77,7 +85,7 @@ mydata %>%
   vtable::st(.)
 ```
 
-Romania:
+### Romania:
 
 ```{r}
 mydata %>%
@@ -129,7 +137,7 @@ germany
 
 ```
 
-Describe your new data (derivation, descriptive statistics,...)
+## Describe your new data (derivation, descriptive statistics,...)
 
 ```{r}
 germany %>%
@@ -137,7 +145,7 @@ germany %>%
 ```
 
 
-Plot the distribution of Ginie coefficients
+## Plot the distribution of Ginie coefficients
 
 ```{r}
   ggplot(germany, aes(x = Year, y=gini, fill=nuts2, color=nuts2)) +
@@ -145,4 +153,4 @@ Plot the distribution of Ginie coefficients
    labs(x = "Year", y = "GDP")
 ```
 
-Discus briefly if there are not worthy outliers
+## Discus briefly if there are not worthy outliers
