@@ -23,6 +23,7 @@ abstract: 'This'
 #library(ggplot2)
 library(tidyverse)
 library(vtable)
+library(dineq)
 #library(dplyr)
 
 # read data from files
@@ -32,16 +33,17 @@ populationfile <- read_csv('DEMO_R_PJANAGGR3.csv')
 gdpdata <- gdpfile %>%
   rename(Year = TIME_PERIOD, GDP = OBS_VALUE, Country=geo)
 
+
 populationdata <- populationfile %>%
   rename(Year = TIME_PERIOD, Population = OBS_VALUE, Country = geo)
 
-gdpdata <- gdpdata %>%
+mydata <- gdpdata %>%
   # select only columns we need
   select(Year, Country, GDP, unit) %>%
   # select rows with MIO_EUR and the countries we need
   filter(unit =='MIO_EUR' & Country %in% c('DE', 'FI', 'RO'))
 
-mydata <- gdpdata %>%
+mydata <- mydata %>%
   # combine gdpr data with population data with the same year and country
   left_join(populationdata, by=c("Year","Country"),
             suffix = c("","_population")) %>%
@@ -52,9 +54,12 @@ mydata <- mydata %>%
   # select the fields that we need
   select(Year, Country, GDP,Population) %>%
   mutate(GDPpercapita = 1000000 * GDP / Population) 
+
+
 ```
 
 Germany:
+
 ```{r}
 mydata %>%
   filter(Country=='DE') %>%
@@ -63,6 +68,7 @@ mydata %>%
 ```
 
 Finland:
+
 ```{r}
 
 mydata %>%
@@ -72,6 +78,7 @@ mydata %>%
 ```
 
 Romania:
+
 ```{r}
 mydata %>%
   filter(Country=='RO') %>%
@@ -79,10 +86,63 @@ mydata %>%
   vtable::st(.)
 ```
 
-
 ```{r}
   ggplot(mydata, aes(x = Year, y=GDPpercapita, fill=Country, color=Country)) +
   geom_line(lwd = .8) +
    labs(x = "Year", y = "GDP per capita")
 ```
 
+```{r}
+  ggplot(mydata, aes(x = Year, y=GDP, fill=Country, color=Country)) +
+  geom_line(lwd = .8) +
+   labs(x = "Year", y = "GDP")
+```
+
+
+```{r}
+germany <- gdpdata %>%
+  select(Year, Country, GDP, unit) %>%
+  # only rows with MIO_EUR and Germany NUTS3
+  filter(unit =='MIO_EUR' & grepl('DE...', Country)) %>%
+  # create nuts2 column to group by
+  mutate(nuts2 = str_sub(Country, 0,4))
+
+germany
+
+germany <- germany %>%
+    # join with population data
+    left_join(populationdata, by=c("Year","Country"),
+            suffix = c("","_population")) %>%
+   # only rows with TOTAL and T from the population data
+  filter(age=='TOTAL' & sex=='T') %>%
+  select(Year,Country,GDP,Population,nuts2)
+
+germany
+
+germany <- germany %>%
+  # group rows by nuts2 and year
+  group_by(nuts2,Year) %>%
+  # calculate gini for each group
+  summarise(gini = gini.wtd(GDP,Population)) 
+
+germany
+
+```
+
+Describe your new data (derivation, descriptive statistics,...)
+
+```{r}
+germany %>%
+  vtable::st(.)
+```
+
+
+Plot the distribution of Ginie coefficients
+
+```{r}
+  ggplot(germany, aes(x = Year, y=gini, fill=nuts2, color=nuts2)) +
+  geom_line(lwd = .8) +
+   labs(x = "Year", y = "GDP")
+```
+
+Discus briefly if there are not worthy outliers
