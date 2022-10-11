@@ -16,8 +16,6 @@ csl: apa-no-ampersand.csl
 abstract: 'This'
 ---
 
-## 
-
 ```{r}
 #library(readr)
 #library(ggplot2)
@@ -63,8 +61,6 @@ mydata <- mydata %>%
 ## Describe the data (GDP per capita) using the meta data description from Eurostat.
 
 ## Report the essential descriptive statistics for you data set (Mean, Min, Max,..:)
-
-
 
 ### Germany:
 
@@ -153,7 +149,6 @@ germany
 germany %>%
   vtable::st(.)
 ```
-
 
 ## Plot the distribution of Ginie coefficients
 
