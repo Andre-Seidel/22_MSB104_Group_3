@@ -90,17 +90,28 @@ mydata %>%
   vtable::st(.)
 ```
 
+### GDPpercapita plot
+
 ```{r}
   ggplot(mydata, aes(x = Year, y=GDPpercapita, fill=Country, color=Country)) +
   geom_line(lwd = .8) +
    labs(x = "Year", y = "GDP per capita")
 ```
 
+### GDP plot
 ```{r}
   ggplot(mydata, aes(x = Year, y=GDP, fill=Country, color=Country)) +
   geom_line(lwd = .8) +
    labs(x = "Year", y = "GDP")
 ```
+
+### Population plot
+```{r}
+ ggplot(mydata, aes(x = Year, y=Population, fill=Country, color=Country)) +
+  geom_line(lwd = .8) +
+   labs(x = "Year", y = "Population")
+```
+
 
 ```{r}
 germany <- gdpdata %>%
