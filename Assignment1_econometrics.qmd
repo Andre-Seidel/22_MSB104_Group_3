@@ -1,5 +1,5 @@
 ---
-title: "Assignment1_econometrics_Malenesr-and-Raojiaxiu"
+title: "Assignment_econometrics_Malenesr-and-Raojiaxiu"
 format: html
 # documentclass: article
 classoption: 
@@ -21,6 +21,8 @@ abstract: 'This assignment will study GDP in the following countries: Germany, F
 In this assignment we will study sub-national gdp in the countries Germany, Finland and Romania using the data sets "Nama_10r_3gdp" and "demo_r\_pjanaggr3" obtained from Eurostat.
 Below we will show which data we have used in the task, in addition to showing the procedure for how we have obtained new data.
 The results will be presented at the end of the assignment, along with a description and discussion of the included data.
+
+## Assignment 1
 
 There are several packages and datasets we need to use in this assignment.
 The packages is listed below:
