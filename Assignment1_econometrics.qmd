@@ -28,12 +28,9 @@ There are several packages and datasets we need to use in this assignment.
 The packages is listed below:
 
 ```{r}
-#library(readr)
-#library(ggplot2)
 library(tidyverse)
 library(vtable)
 library(dineq)
-#library(dplyr)
 
 # read data from files
 gdpfile <- read_csv('NAMA_10R_3GDP.csv')
@@ -159,7 +156,7 @@ ginidata <- ginidata %>%
 
 ## Describe your new data (derivation, descriptive statistics,...)
 
-The new data is a table with three columns, nuts2 string, Year and the gini calculation. All three countries are in the same table.
+The new data is a table with three columns, nuts2 string, Year and the gini calculation. All three countries are in the same table and contains 1020 rows.
 
 ```{r}
 ginidata
