@@ -130,16 +130,15 @@ mydata %>%
 To calculate GDP Ginie coefficients for nuts2 level, we need to get the GDP data for our three countries on a nuts3 level first. We filter lines by using grepl and create a nuts2 level string using str_sub. Then we join this with the poulation data from the other file and use gini.wtd and group_by to calculate the coefficients.
 
 ```{r}
-germany <- gdpdata %>%
+ginidata <- gdpdata %>%
   select(Year, Country, GDP, unit) %>%
   # only rows with MIO_EUR and Germany NUTS3
-  filter(unit =='MIO_EUR' & grepl('DE...', Country)) %>%
+  filter(unit =='MIO_EUR' & (grepl('DE...', Country) | grepl('FI...', Country) | grepl('RO...', Country))) %>%
   # create nuts2 column to group by
   mutate(nuts2 = str_sub(Country, 0,4))
 
-germany
 
-germany <- germany %>%
+ginidata <- ginidata %>%
     # join with population data
     left_join(populationdata, by=c("Year","Country"),
             suffix = c("","_population")) %>%
@@ -147,15 +146,14 @@ germany <- germany %>%
   filter(age=='TOTAL' & sex=='T') %>%
   select(Year,Country,GDP,Population,nuts2)
 
-germany
+ginidata
 
-germany <- germany %>%
+ginidata <- ginidata %>%
   # group rows by nuts2 and year
   group_by(nuts2,Year) %>%
   # calculate gini for each group
   summarise(gini = gini.wtd(GDP,Population)) 
 
-germany
 
 ```
 
@@ -164,16 +162,56 @@ germany
 The new data is a table with three columns, nuts2 string, Year and the gini calculation. All three countries are in the same table.
 
 ```{r}
-germany %>%
+ginidata
+
+ginidata %>%
   vtable::st(.)
 ```
 
 ## Plot the distribution of Ginie coefficients
 
+### Germany
 ```{r}
+germany <- ginidata %>%
+  filter(grepl("DE..", nuts2))
+
+germany %>%
+  vtable::st(.)
+
+
   ggplot(germany, aes(x = Year, y=gini, fill=nuts2, color=nuts2)) +
-  geom_line(lwd = .8) +
+  geom_point(lwd = .8) +
    labs(x = "Year", y = "GDP")
 ```
+
+### Finland
+
+```{r}
+finland <- ginidata %>%
+  filter(grepl("FI..", nuts2))
+
+finland %>%
+  vtable::st(.)
+
+
+  ggplot(finland, aes(x = Year, y=gini, fill=nuts2, color=nuts2)) +
+  geom_point(lwd = .8) +
+   labs(x = "Year", y = "GDP")
+```
+
+### Romania
+
+```{r}
+romania <- ginidata %>%
+  filter(grepl("RO..", nuts2))
+
+romania %>%
+  vtable::st(.)
+
+  ggplot(romania, aes(x = Year, y=gini, fill=nuts2, color=nuts2)) +
+  geom_point(lwd = .8) +
+   labs(x = "Year", y = "GDP")
+```
+
 
 ## Discus briefly if there are not worthy outliers
