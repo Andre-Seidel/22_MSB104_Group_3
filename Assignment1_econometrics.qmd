@@ -19,31 +19,138 @@ abstract: 'This'
 ## 
 
 ```{r}
-library(readr)
-library(ggplot2)
+#library(readr)
+#library(ggplot2)
 library(tidyverse)
-library(dplyr)
+library(vtable)
+library(dineq)
+#library(dplyr)
 
-gdpdata <- read_csv('NAMA_10R_3GDP.csv')
-populationdata <- read_csv('DEMO_R_PJANAGGR3.csv')
+# read data from files
+gdpfile <- read_csv('NAMA_10R_3GDP.csv')
+populationfile <- read_csv('DEMO_R_PJANAGGR3.csv')
 
-gdpq <- gdpdata %>%
-  select(TIME_PERIOD, geo, OBS_VALUE, unit) %>%
-  filter(unit =='MIO_EUR' & geo %in% c('DE', 'FI', 'RO'))
+gdpdata <- gdpfile %>%
+  rename(Year = TIME_PERIOD, GDP = OBS_VALUE, Country=geo)
 
-mydata <- gdpq %>%
-  left_join(populationdata, by=c("TIME_PERIOD","geo"),
+
+populationdata <- populationfile %>%
+  rename(Year = TIME_PERIOD, Population = OBS_VALUE, Country = geo)
+
+mydata <- gdpdata %>%
+  # select only columns we need
+  select(Year, Country, GDP, unit) %>%
+  # select rows with MIO_EUR and the countries we need
+  filter(unit =='MIO_EUR' & Country %in% c('DE', 'FI', 'RO'))
+
+mydata <- mydata %>%
+  # combine gdpr data with population data with the same year and country
+  left_join(populationdata, by=c("Year","Country"),
             suffix = c("","_population")) %>%
+   # only rows with TOTAL and T from the population data
   filter(age=='TOTAL' & sex=='T')
+```
 
+## Calculate GDP per capita
+
+```{r}
 mydata <- mydata %>% 
-  select(TIME_PERIOD, geo, OBS_VALUE,OBS_VALUE_population 
-        ) #%>% 
-  #head(n = 3)
+  # select the fields that we need
+  select(Year, Country, GDP,Population) %>%
+  mutate(GDPpercapita = 1000000 * GDP / Population) 
+```
 
-mydata
-  
+## Describe the data (GDP per capita) using the meta data description from Eurostat.
+
+## Report the essential descriptive statistics for you data set (Mean, Min, Max,..:)
 
 
+
+### Germany:
+
+```{r}
+mydata %>%
+  filter(Country=='DE') %>%
+  select(-Country) %>%
+  vtable::st(.)
+```
+
+### Finland:
+
+```{r}
+
+mydata %>%
+  filter(Country=='FI') %>%
+  select(-Country) %>%
+  vtable::st(.)
+```
+
+### Romania:
+
+```{r}
+mydata %>%
+  filter(Country=='RO') %>%
+  select(-Country) %>%
+  vtable::st(.)
+```
+
+```{r}
+  ggplot(mydata, aes(x = Year, y=GDPpercapita, fill=Country, color=Country)) +
+  geom_line(lwd = .8) +
+   labs(x = "Year", y = "GDP per capita")
+```
+
+```{r}
+  ggplot(mydata, aes(x = Year, y=GDP, fill=Country, color=Country)) +
+  geom_line(lwd = .8) +
+   labs(x = "Year", y = "GDP")
+```
+
+
+```{r}
+germany <- gdpdata %>%
+  select(Year, Country, GDP, unit) %>%
+  # only rows with MIO_EUR and Germany NUTS3
+  filter(unit =='MIO_EUR' & grepl('DE...', Country)) %>%
+  # create nuts2 column to group by
+  mutate(nuts2 = str_sub(Country, 0,4))
+
+germany
+
+germany <- germany %>%
+    # join with population data
+    left_join(populationdata, by=c("Year","Country"),
+            suffix = c("","_population")) %>%
+   # only rows with TOTAL and T from the population data
+  filter(age=='TOTAL' & sex=='T') %>%
+  select(Year,Country,GDP,Population,nuts2)
+
+germany
+
+germany <- germany %>%
+  # group rows by nuts2 and year
+  group_by(nuts2,Year) %>%
+  # calculate gini for each group
+  summarise(gini = gini.wtd(GDP,Population)) 
+
+germany
 
 ```
+
+## Describe your new data (derivation, descriptive statistics,...)
+
+```{r}
+germany %>%
+  vtable::st(.)
+```
+
+
+## Plot the distribution of Ginie coefficients
+
+```{r}
+  ggplot(germany, aes(x = Year, y=gini, fill=nuts2, color=nuts2)) +
+  geom_line(lwd = .8) +
+   labs(x = "Year", y = "GDP")
+```
+
+## Discus briefly if there are not worthy outliers
