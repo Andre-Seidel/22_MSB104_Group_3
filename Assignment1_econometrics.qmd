@@ -108,6 +108,7 @@ mydata %>%
 ```
 
 ### GDP plot
+
 ```{r}
   ggplot(mydata, aes(x = Year, y=GDP, fill=Country, color=Country)) +
   geom_line(lwd = .8) +
@@ -115,12 +116,12 @@ mydata %>%
 ```
 
 ### Population plot
+
 ```{r}
  ggplot(mydata, aes(x = Year, y=Population, fill=Country, color=Country)) +
   geom_line(lwd = .8) +
    labs(x = "Year", y = "Population")
 ```
-
 
 ```{r}
 germany <- gdpdata %>%
