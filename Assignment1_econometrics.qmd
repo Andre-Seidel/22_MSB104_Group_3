@@ -125,6 +125,10 @@ mydata %>%
    labs(x = "Year", y = "Population")
 ```
 
+## Calculate GDP Ginie coefficients for nuts2 level
+
+To calculate GDP Ginie coefficients for nuts2 level, we need to get the GDP data for our three countries on a nuts3 level first. We filter lines by using grepl and create a nuts2 level string using str_sub. Then we join this with the poulation data from the other file and use gini.wtd and group_by to calculate the coefficients.
+
 ```{r}
 germany <- gdpdata %>%
   select(Year, Country, GDP, unit) %>%
@@ -156,6 +160,8 @@ germany
 ```
 
 ## Describe your new data (derivation, descriptive statistics,...)
+
+The new data is a table with three columns, nuts2 string, Year and the gini calculation. All three countries are in the same table.
 
 ```{r}
 germany %>%
