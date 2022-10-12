@@ -110,7 +110,8 @@ mydata %>%
     vtable::st(.)
 ```
 
-We can use this dataset to see plots of GDP and Population values
+We are now left with a data set that has combined the relevant data from both the Nama_10r_3gdp and Demo_r\_pjanaggr3 data sets.
+We can use this data set to create plots with GDP and population value to present the values in a structured way.
 
 #### GDP plot
 
@@ -130,7 +131,8 @@ We can use this dataset to see plots of GDP and Population values
 
 ## Calculate GDP per capita
 
-We calculate GDP per capita by multiplying the GDP value with 1 million since it is in million euro and divide by the population value.
+To calculate GDP per capita we use the following formula: We multiply the GDP value with 1 million since it is in million euro and dividing by the population value.
+Below we show how the formula for GDP per capita is used, and the results appear for each of the countries in the group (Germany, Finland and Romania).
 
 ```{r}
 mydata <- mydata %>% 
@@ -168,19 +170,36 @@ mydata %>%
 
 ### GDP per capita plot
 
+We present the results in a plot, where we collect GDP per capita for all three countries in the same presentation.
+This provides a clear presentation of the results, and simplifies the process of comparing the countries' level of GDP per capita.
+
 ```{r}
   ggplot(mydata, aes(x = Year, y=GDPpercapita, fill=Region, color=Region)) +
   geom_line(lwd = .8) +
    labs(x = "Year", y = "GDP per capita")
 ```
 
+The comparison shows that Germany and Finland are fairly similar in terms of GDP per capita.
+There is a large gap between the above-mentioned countries and Romania, where the GDP per inhabitant is lower than the other two countries.
+
+By looking at GDP per capita, the plot will take into account the population of the country and give a realistic picture of the actual level of GDP.
+This makes it possible to give a realistic comparison of the countries in our group, even if the countries are of different sizes.
+
 ### GDP plot
+
+The plot "GDP Plot" shows the three countries' GDP without taking into account the population in the country.
+In this plot we see that Finland and Romania are relatively close, while there is a large gap up to Germany's level of gdp.
+The countries are of different sizes, and the population is a factor of central importance for the production of gdp as shown in the previous plot.
 
 ```{r}
   ggplot(mydata, aes(x = Year, y=GDP, fill=Region, color=Region)) +
   geom_line(lwd = .8) +
    labs(x = "Year", y = "GDP")
 ```
+
+In order to be able to compare the countries' gdp and get a realistic representation, it is central which factors are included in the plot.
+There are clear differences in the representation of GDP in the two plots shown above.
+the countries are placed differently, depending on which factors are included in the coding.
 
 ## Calculate GDP Ginie coefficients for nuts2 level
 
