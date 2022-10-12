@@ -242,7 +242,7 @@ ginidata <- ginidata %>%
 ### Description of gini dataset
 
 The new data is a table with three columns, nuts2 string, Year and the gini calculation.
-All three countries are in the same table and contains 1020 rows.
+All three countries in our group are in the same table and contains 1020 rows.
 
 ```{r}
 ginidata
@@ -252,6 +252,8 @@ ginidata %>%
 ```
 
 ### Distribution of GDP Ginie coefficients
+
+By sorting the data shown in the table above, we can present a more clear presentation of the data for each of the three countries included.
 
 #### GDP Ginie coefficients Germany
 
@@ -299,10 +301,14 @@ romania %>%
 
 ## Outliers in data set
 
-For Germany there are at least two regions that stick out from the rest when looking at the plot.
-They are difficult to identify graphically, but we can check the data to find those with zero values.
+An outlier is a term used for a deviant value that stands out from the rest of the values in a data set.
+It is difficult to identify deviating values in the graphical presentation of the countries shown above.
+However, by checking the data, we have the opportunity to find the values that deviate, so-called data with zero values.
 
-These are the regions that are potential outliers in the german dataset:
+#### Outliers Germany
+
+For Germany there are at least two regions that stick out from the rest when looking at the plot.
+By using the following code we find that these two regions are potential outliers in the data set for Germany:
 
 ```{r}
 germanoutliers <- germany %>%
@@ -312,9 +318,12 @@ germanoutliers <- germany %>%
 germanoutliers
 ```
 
-We can see from the plot that at least two of these seems to be missing date for several years.
+We can see from the plot that at least two of the regions in Germany seems to be missing date for several years.
+Both the graphical representation in the plot and the examination of data through coding support this theory.
 
-We can do the same for Finland.
+#### Outliers Finland
+
+We are doing the same survey for Finland, to see if there are potential outliers there as well
 
 ```{r}
 finlandoutliers <- finland %>%
@@ -324,7 +333,19 @@ finlandoutliers <- finland %>%
 finlandoutliers
 ```
 
-This gives two candidate regions as outliers.
-At least FI20 looks like it is zeros for all years.
+After using the same method as for Germany, we see that it results in two potential outliers for Finland.
+By studying the plot, it appears that FI20 in any case lacks data, and has a zero value for all years.
+Both FI1B and FI20 are potential candidates as outliers in the dataset for Finland.
 
-For Romania there is no clear outliers.
+#### Outliers Romania
+
+By carrying out the same procedure as above, no clear outliers emerge for Romania.
+There are no values in the data set that clearly differ from the remaining values, either in the plot or by examinations of the table.
+
+```{r}
+romaniaoutliers <- romania %>%
+  filter(gini==0) %>%
+  distinct(nuts2)
+
+romaniaoutliers
+```
