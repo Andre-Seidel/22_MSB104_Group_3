@@ -140,32 +140,72 @@ mydata <- mydata %>%
   mutate(GDPpercapita = 1000000 * GDP / Population) 
 ```
 
+Since we now have GDP per capita for each region, for each year, we can for example find the wealthiest and least wealthiest regioens for a given year. We chose 2019 to investigate our results.
+
 ### GDP per capita for Germany:
 
+#### The three wealthiest regions in Germany are:
 ```{r}
 mydata %>%
   filter(grepl("DE...", Region)) %>%
   select(-Region) %>%
   vtable::st(.)
+
+dedata <- mydata%>%
+  filter(grepl("DE...", Region)) %>%
+  filter(Year==2019) %>%
+  select(Region, GDPpercapita)
+
+top_n(dedata, 3, GDPpercapita)
+```
+#### These are the three least wealthiest regions
+```{r}
+top_n(dedata,-3, GDPpercapita)
 ```
 
 ### GDP per capita for Finland:
 
+#### The three wealthiest regions in Finland are:
 ```{r}
 
 mydata %>%
   filter(grepl("FI...", Region)) %>%
   select(-Region) %>%
   vtable::st(.)
+
+fidata <- mydata%>%
+  filter(grepl("FI...", Region)) %>%
+  filter(Year==2019) %>%
+  select(Region, GDPpercapita)
+
+top_n(fidata, 3, GDPpercapita)
 ```
+#### These are the three least wealthiest regions
+```{r}
+top_n(fidata,-3, GDPpercapita)
+```
+
 
 ### GDP per capita for Romania:
 
+#### The three wealthiest regions in Romania are:
 ```{r}
 mydata %>%
   filter(grepl("RO...", Region)) %>%
   select(-Region) %>%
   vtable::st(.)
+
+rodata <- mydata%>%
+  filter(grepl("RO...", Region)) %>%
+  filter(Year==2019) %>%
+  select(Region, GDPpercapita)
+
+top_n(rodata, 3, GDPpercapita)
+```
+
+#### These are the three least wealthiest regions
+```{r}
+top_n(rodata,-3, GDPpercapita)
 ```
 
 ### GDP per capita plot
