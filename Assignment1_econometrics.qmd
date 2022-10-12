@@ -147,13 +147,15 @@ Since we now have GDP per capita for each region, for each year, we can for exam
 
 ### GDP per capita for Germany:
 
-#### The three wealthiest regions in Germany are:
 ```{r}
 mydata %>%
   filter(grepl("DE...", Region)) %>%
   select(-Region) %>%
   vtable::st(.)
+```
 
+#### The three wealthiest regions in Germany are:
+```{r}
 dedata <- mydata%>%
   filter(grepl("DE...", Region)) %>%
   filter(Year==2019) %>%
@@ -168,14 +170,15 @@ top_n(dedata,-3, GDPpercapita)
 
 ### GDP per capita for Finland:
 
-#### The three wealthiest regions in Finland are:
 ```{r}
 
 mydata %>%
   filter(grepl("FI...", Region)) %>%
   select(-Region) %>%
   vtable::st(.)
-
+```
+#### The three wealthiest regions in Finland are:
+```{r}
 fidata <- mydata%>%
   filter(grepl("FI...", Region)) %>%
   filter(Year==2019) %>%
@@ -191,13 +194,15 @@ top_n(fidata,-3, GDPpercapita)
 
 ### GDP per capita for Romania:
 
-#### The three wealthiest regions in Romania are:
 ```{r}
 mydata %>%
   filter(grepl("RO...", Region)) %>%
   select(-Region) %>%
   vtable::st(.)
+```
+#### The three wealthiest regions in Romania are:
 
+```{r}
 rodata <- mydata%>%
   filter(grepl("RO...", Region)) %>%
   filter(Year==2019) %>%
