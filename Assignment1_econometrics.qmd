@@ -146,11 +146,13 @@ dedata <- mydata%>%
   filter(Year==2019) %>%
   select(Region, GDPpercapita)
 
-top_n(dedata, 3, GDPpercapita)
+slice_max(dedata, GDPpercapita, n=3)
+
 ```
 #### These are the three least wealthiest regions
 ```{r}
-top_n(dedata,-3, GDPpercapita)
+slice_min(dedata, GDPpercapita, n=3)
+
 ```
 
 ### GDP per capita for Finland:
@@ -169,11 +171,12 @@ fidata <- mydata%>%
   filter(Year==2019) %>%
   select(Region, GDPpercapita)
 
-top_n(fidata, 3, GDPpercapita)
+slice_max(fidata, GDPpercapita, n=3)
 ```
 #### These are the three least wealthiest regions
 ```{r}
-top_n(fidata,-3, GDPpercapita)
+slice_min(fidata, GDPpercapita, n=3)
+
 ```
 
 
@@ -193,12 +196,14 @@ rodata <- mydata%>%
   filter(Year==2019) %>%
   select(Region, GDPpercapita)
 
-top_n(rodata, 3, GDPpercapita)
+slice_max(rodata, GDPpercapita, n=3)
+
 ```
 
 #### These are the three least wealthiest regions
 ```{r}
-top_n(rodata,-3, GDPpercapita)
+slice_min(rodata, GDPpercapita, n=3)
+
 ```
 
 ### GDP per capita plot
