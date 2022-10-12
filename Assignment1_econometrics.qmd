@@ -132,7 +132,7 @@ We can use this data set to create plots with GDP and population value to presen
 ## Calculate GDP per capita
 
 To calculate GDP per capita we use the following formula: We multiply the GDP value with 1 million since it is in million euro and dividing by the population value.
-Below we show how the formula for GDP per capita is used, and the results appear for each of the countries in the group (Germany, Finland and Romania).
+Below we show how the formula for GDP per capita is used, and the results appear for each nuts3 region for the three countries in the group (Germany, Finland and Romania).
 
 ```{r}
 mydata <- mydata %>% 
