@@ -1,5 +1,5 @@
 ---
-title: "Assignment1_econometrics_Malenesr-and-Raojiaxiu"
+title: "Assignment_econometrics_Malenesr-and-Raojiaxiu"
 format: html
 # documentclass: article
 classoption: 
@@ -18,91 +18,151 @@ abstract: 'This assignment will study GDP in the following countries: Germany, F
 
 ## Introduction
 
+This assignment is the first part of a total of four assignments to be delivered in the subject econometrics as a final exam.
+The assignment will be built on as the various tasks are solved and presented as a complete quarto document at the end of the semester.
+
+### Assignment 1
+
 In this assignment we will study sub-national gdp in the countries Germany, Finland and Romania using the data sets "Nama_10r_3gdp" and "demo_r\_pjanaggr3" obtained from Eurostat.
-Below we will show which data we have used in the task, in addition to showing the procedure for how we have obtained new data.
+Below we will present which packages we have used to read and process the data we have used in the task, in addition to showing the procedure for how we have obtained new data.
 The results will be presented at the end of the assignment, along with a description and discussion of the included data.
+
+### Description of data sets
 
 There are several packages and datasets we need to use in this assignment.
 The packages is listed below :
 
 ```{r}
-#library(readr)
-#library(ggplot2)
 library(tidyverse)
 library(vtable)
 library(dineq)
-#library(dplyr)
+```
 
+The datafiles "Nama_10r_3gdp" and "Demo_r\_pjanaggr3" contains different data.
+Next, we will present the datasets and their content.
+
+Nama_10r_3gdp contains GDP data on nuts3 level for many countries.
+The data set is structured in different columns that present different data values.
+in this assignment, the following values are relevant to us: The GDP values we are looking for emerges from the column "OBS_VALUE".
+The column "GEO" tells which geographical region the values belong to.
+There is also a column for year named "TIME_PERIOD".
+There are different types of GDP values and the unit is stored in a column named "UNIT".
+We have chosen to use values where unit is MIO_EUR.
+
+Demo_r\_pjanaggr3 contains population data on nuts3 level.
+The structure is similar to the previous dataset we presented and contains columns as the other file with the same names for value, region and year.
+This file also have multiple values with different groupings.
+We specify which choices we have made regarding which data is used:
+
+There is a column named "AGE" for age groups.
+We have chosen the rows where the age is TOTAL.
+Further there is a column for sex and we have choosen rows where sex = T.
+T refers to the total value for both males and females.
+
+### Reading in data sets and renaming columns
+
+```{r}
 # read data from files
 gdpfile <- read_csv('NAMA_10R_3GDP.csv')
 populationfile <- read_csv('DEMO_R_PJANAGGR3.csv')
 
 gdpdata <- gdpfile %>%
-  rename(Year = TIME_PERIOD, GDP = OBS_VALUE, Country=geo)
+  rename(Year = TIME_PERIOD, GDP = OBS_VALUE, Region=geo)
 
 
 populationdata <- populationfile %>%
-  rename(Year = TIME_PERIOD, Population = OBS_VALUE, Country = geo)
+  rename(Year = TIME_PERIOD, Population = OBS_VALUE, Region = geo)
+```
+
+### Filter data and join the two datasets
+
+```{r}
 
 mydata <- gdpdata %>%
   # select only columns we need
-  select(Year, Country, GDP, unit) %>%
+  select(Year, Region, GDP, unit) %>%
   # select rows with MIO_EUR and the countries we need
-  filter(unit =='MIO_EUR' & Country %in% c('DE', 'FI', 'RO'))
+  filter(unit =='MIO_EUR' & Region %in% c('DE', 'FI', 'RO'))
 
 mydata <- mydata %>%
-  # combine gdpr data with population data with the same year and country
-  left_join(populationdata, by=c("Year","Country"),
+  # combine gdpr data with population data with the same year and region
+  left_join(populationdata, by=c("Year","Region"),
             suffix = c("","_population")) %>%
    # only rows with TOTAL and T from the population data
-  filter(age=='TOTAL' & sex=='T')
+  filter(age=='TOTAL' & sex=='T') %>%
+  select(Year, Region, GDP,Population)
+```
+
+We now have a dataset with combined GDP and population values.
+It looks like this:
+
+```{r}
+mydata
+
+mydata %>%
+    vtable::st(.)
+```
+
+We can use this dataset to see plots of GDP and Population values
+
+#### GDP plot
+
+```{r}
+  ggplot(mydata, aes(x = Year, y=GDP, fill=Region, color=Region)) +
+  geom_line(lwd = .8) +
+   labs(x = "Year", y = "GDP")
+```
+
+#### Population plot
+
+```{r}
+ ggplot(mydata, aes(x = Year, y=Population, fill=Region, color=Region)) +
+  geom_line(lwd = .8) +
+   labs(x = "Year", y = "Population")
 ```
 
 ## Calculate GDP per capita
 
+We calculate GDP per capita by multiplying the GDP value with 1 million since it is in million euro and divide by the population value.
+
 ```{r}
 mydata <- mydata %>% 
   # select the fields that we need
-  select(Year, Country, GDP,Population) %>%
   mutate(GDPpercapita = 1000000 * GDP / Population) 
 ```
 
-## Describe the data (GDP per capita) using the meta data description from Eurostat.
-
-## Report the essential descriptive statistics for you data set (Mean, Min, Max,..:)
-
-### Germany:
+### GDP per capita for Germany:
 
 ```{r}
 mydata %>%
-  filter(Country=='DE') %>%
-  select(-Country) %>%
+  filter(Region=='DE') %>%
+  select(-Region) %>%
   vtable::st(.)
 ```
 
-### Finland:
+### GDP per capita for Finland:
 
 ```{r}
 
 mydata %>%
-  filter(Country=='FI') %>%
-  select(-Country) %>%
+  filter(Region=='FI') %>%
+  select(-Region) %>%
   vtable::st(.)
 ```
 
-### Romania:
+### GDP per capita for Romania:
 
 ```{r}
 mydata %>%
-  filter(Country=='RO') %>%
-  select(-Country) %>%
+  filter(Region=='RO') %>%
+  select(-Region) %>%
   vtable::st(.)
 ```
 
-### GDPpercapita plot
+### GDP per capita plot
 
 ```{r}
-  ggplot(mydata, aes(x = Year, y=GDPpercapita, fill=Country, color=Country)) +
+  ggplot(mydata, aes(x = Year, y=GDPpercapita, fill=Region, color=Region)) +
   geom_line(lwd = .8) +
    labs(x = "Year", y = "GDP per capita")
 ```
@@ -115,6 +175,12 @@ mydata %>%
    labs(x = "Year", y = "GDP")
 ```
 
+## Calculate GDP Ginie coefficients for nuts2 level
+
+To calculate GDP Ginie coefficients for nuts2 level, we need to get the GDP data for our three countries on a nuts3 level first.
+We filter lines by using grepl and create a nuts2 level string using str_sub.
+Then we join this with the poulation data from the other file and use gini.wtd and group_by to calculate the coefficients.
+
 ### Population plot
 
 ```{r}
@@ -124,48 +190,115 @@ mydata %>%
 ```
 
 ```{r}
-germany <- gdpdata %>%
-  select(Year, Country, GDP, unit) %>%
+ginidata <- gdpdata %>%
+  select(Year, Region, GDP, unit) %>%
   # only rows with MIO_EUR and Germany NUTS3
-  filter(unit =='MIO_EUR' & grepl('DE...', Country)) %>%
+  filter(unit =='MIO_EUR' & (grepl('DE...', Region) | grepl('FI...', Region) | grepl('RO...', Region))) %>%
   # create nuts2 column to group by
-  mutate(nuts2 = str_sub(Country, 0,4))
+  mutate(nuts2 = str_sub(Region, 0,4))
 
-germany
-
-germany <- germany %>%
+ginidata <- ginidata %>%
     # join with population data
-    left_join(populationdata, by=c("Year","Country"),
+    left_join(populationdata, by=c("Year","Region"),
             suffix = c("","_population")) %>%
    # only rows with TOTAL and T from the population data
   filter(age=='TOTAL' & sex=='T') %>%
-  select(Year,Country,GDP,Population,nuts2)
+  select(Year,Region,GDP,Population,nuts2)
 
-germany
-
-germany <- germany %>%
+ginidata <- ginidata %>%
   # group rows by nuts2 and year
   group_by(nuts2,Year) %>%
   # calculate gini for each group
   summarise(gini = gini.wtd(GDP,Population)) 
 
-germany
-
 ```
 
-## Describe your new data (derivation, descriptive statistics,...)
+### Description of gini dataset
+
+The new data is a table with three columns, nuts2 string, Year and the gini calculation.
+All three countries are in the same table and contains 1020 rows.
 
 ```{r}
-germany %>%
+ginidata
+
+ginidata %>%
   vtable::st(.)
 ```
 
-## Plot the distribution of Ginie coefficients
+### Distribution of GDP Ginie coefficients
+
+#### GDP Ginie coefficients Germany
 
 ```{r}
+germany <- ginidata %>%
+  filter(grepl("DE..", nuts2))
+
+germany %>%
+  vtable::st(.)
+
+
   ggplot(germany, aes(x = Year, y=gini, fill=nuts2, color=nuts2)) +
-  geom_line(lwd = .8) +
+  geom_point(lwd = .8) +
    labs(x = "Year", y = "GDP")
 ```
 
-## Discus briefly if there are not worthy outliers
+#### GDP Ginie coefficients Finland
+
+```{r}
+finland <- ginidata %>%
+  filter(grepl("FI..", nuts2))
+
+finland %>%
+  vtable::st(.)
+
+
+  ggplot(finland, aes(x = Year, y=gini, fill=nuts2, color=nuts2)) +
+  geom_point(lwd = .8) +
+   labs(x = "Year", y = "GDP")
+```
+
+#### GDP Ginie coefficients Romania
+
+```{r}
+romania <- ginidata %>%
+  filter(grepl("RO..", nuts2))
+
+romania %>%
+  vtable::st(.)
+
+  ggplot(romania, aes(x = Year, y=gini, fill=nuts2, color=nuts2)) +
+  geom_point(lwd = .8) +
+   labs(x = "Year", y = "GDP")
+```
+
+## Outliers in data set
+
+For Germany there are at least two regions that stick out from the rest when looking at the plot.
+They are difficult to identify graphically, but we can check the data to find those with zero values.
+
+These are the regions that are potential outliers in the german dataset:
+
+```{r}
+germanoutliers <- germany %>%
+  filter(gini==0) %>%
+  distinct(nuts2)
+
+germanoutliers
+```
+
+We can see from the plot that at least two of these seems to be missing date for several years.
+
+We can do the same for Finland.
+
+```{r}
+finlandoutliers <- finland %>%
+  filter(gini==0) %>%
+  distinct(nuts2)
+
+finlandoutliers
+```
+
+This gives two candidate regions as outliers.
+At least FI20 looks like it is zeros for all years.
+
+For Romania there is no clear outliers.
