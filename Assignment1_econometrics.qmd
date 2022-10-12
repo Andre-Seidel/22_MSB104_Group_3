@@ -35,6 +35,10 @@ The results will be presented at the end of the assignment, along with a descrip
 There are several packages and datasets we need to use in this assignment.
 The packages is listed below :
 
+                    library(tidyverse)
+                    library(vtable)
+                    library(dineq)
+
 ```{r}
 library(tidyverse)
 library(vtable)
