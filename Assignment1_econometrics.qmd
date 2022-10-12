@@ -93,8 +93,15 @@ mydata <- mydata %>%
   select(Year, Region, GDP,Population)
 ```
 
-We now have a dataset with combined GDP and population values.
-It looks like this:
+As mentioned above, the two data sets consist of different values.
+In order for us to be able to use the data that is relevant for our task, we must filter the data so that we are left with the information that is needed further in the task.
+The first step is to read in the data sets and name the columns to be used.
+Furthermore, the data must be filtered, so that we find the information that is relevant to us.
+
+Above you can see which filters have been used to find the information about the countries in our group: Germany, Finland and Romania.
+The data is further combined with population data from the same region and year.
+We are now left with a dataset where GDP and population values are combined.
+Below you can see what the combination looks like:
 
 ```{r}
 mydata
