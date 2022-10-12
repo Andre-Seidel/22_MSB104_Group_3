@@ -18,16 +18,19 @@ abstract: 'This assignment will study GDP in the following countries: Germany, F
 
 ## Introduction
 
-In this assignment we will study sub-national gdp in the countries Germany, Finland and Romania using the data sets "Nama_10r_3gdp" and "demo_r\_pjanaggr3" obtained from Eurostat.
-Below we will show which data we have used in the task, in addition to showing the procedure for how we have obtained new data.
-The results will be presented at the end of the assignment, along with a description and discussion of the included data.
+This assignment is the first part of a total of four assignments to be delivered in the subject econometrics as a final exam.
+The assignment will be built on as the various tasks are solved and presented as a complete quarto document at the end of the semester.
 
-## Assignment 1
+### Assignment 1
+
+In this assignment we will study sub-national gdp in the countries Germany, Finland and Romania using the data sets "Nama_10r_3gdp" and "demo_r\_pjanaggr3" obtained from Eurostat.
+Below we will present which packages we have used to read and process the data we have used in the task, in addition to showing the procedure for how we have obtained new data.
+The results will be presented at the end of the assignment, along with a description and discussion of the included data.
 
 ### Description of data sets
 
 There are several packages and datasets we need to use in this assignment.
-The packages is listed below:
+The packages is listed below :
 
 ```{r}
 library(tidyverse)
@@ -35,19 +38,26 @@ library(vtable)
 library(dineq)
 ```
 
-The files contain different data.
-Nama_10r_3gdp contains GDP data on nuts3 level for many countries and contains multiple columns.
-The values we are looking for seems to be in the column named OBS_VALUE and the region is in a column named geo.
-There is also a column for year named TIME_PERIOD.
+The datafiles "Nama_10r_3gdp" and "Demo_r\_pjanaggr3" contains different data.
+Next, we will present the datasets and their content.
 
-There are different types of GDP values and the unit is stored in a column named unit.
+Nama_10r_3gdp contains GDP data on nuts3 level for many countries.
+The data set is structured in different columns that present different data values.
+in this assignment, the following values are relevant to us: The GDP values we are looking for emerges from the column "OBS_VALUE".
+The column "GEO" tells which geographical region the values belong to.
+There is also a column for year named "TIME_PERIOD".
+There are different types of GDP values and the unit is stored in a column named "UNIT".
 We have chosen to use values where unit is MIO_EUR.
 
-demo_r\_pjanaggr3 contains population data on nuts3 level and contains similar coulmns as the other file with the same names for value, region and year.
+Demo_r\_pjanaggr3 contains population data on nuts3 level.
+The structure is similar to the previous dataset we presented and contains columns as the other file with the same names for value, region and year.
 This file also have multiple values with different groupings.
-There is a column named age for age groups.
-We have chosen rows there age is TOTAL.
-There is also another column for sex and we have chosen rows where sex == T which looks like the total value for both males and females.
+We specify which choices we have made regarding which data is used:
+
+There is a column named "AGE" for age groups.
+We have chosen the rows where the age is TOTAL.
+Further there is a column for sex and we have choosen rows where sex = T.
+T refers to the total value for both males and females.
 
 ### Reading in data sets and renaming columns
 
@@ -157,11 +167,27 @@ mydata %>%
    labs(x = "Year", y = "GDP per capita")
 ```
 
+### GDP plot
+
+```{r}
+  ggplot(mydata, aes(x = Year, y=GDP, fill=Country, color=Country)) +
+  geom_line(lwd = .8) +
+   labs(x = "Year", y = "GDP")
+```
+
 ## Calculate GDP Ginie coefficients for nuts2 level
 
 To calculate GDP Ginie coefficients for nuts2 level, we need to get the GDP data for our three countries on a nuts3 level first.
 We filter lines by using grepl and create a nuts2 level string using str_sub.
 Then we join this with the poulation data from the other file and use gini.wtd and group_by to calculate the coefficients.
+
+### Population plot
+
+```{r}
+ ggplot(mydata, aes(x = Year, y=Population, fill=Country, color=Country)) +
+  geom_line(lwd = .8) +
+   labs(x = "Year", y = "Population")
+```
 
 ```{r}
 ginidata <- gdpdata %>%
