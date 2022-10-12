@@ -116,17 +116,17 @@ We can use this data set to create plots with GDP and population value to presen
 #### GDP plot
 
 ```{r}
-  ggplot(mydata, aes(x = Year, y=GDP, fill=Region, color=Region)) +
-  geom_line(lwd = .8) +
-   labs(x = "Year", y = "GDP")
+#  ggplot(mydata, aes(x = Year, y=GDP, fill=Region, color=Region)) +
+#  geom_line(lwd = .8) +
+#   labs(x = "Year", y = "GDP")
 ```
 
 #### Population plot
 
 ```{r}
- ggplot(mydata, aes(x = Year, y=Population, fill=Region, color=Region)) +
-  geom_line(lwd = .8) +
-   labs(x = "Year", y = "Population")
+# ggplot(mydata, aes(x = Year, y=Population, fill=Region, color=Region)) +
+#  geom_line(lwd = .8) +
+#   labs(x = "Year", y = "Population")
 ```
 
 ## Calculate GDP per capita
@@ -174,9 +174,9 @@ We present the results in a plot, where we collect GDP per capita for all three 
 This provides a clear presentation of the results, and simplifies the process of comparing the countries' level of GDP per capita.
 
 ```{r}
-  ggplot(mydata, aes(x = Year, y=GDPpercapita, fill=Region, color=Region)) +
-  geom_line(lwd = .8) +
-   labs(x = "Year", y = "GDP per capita")
+#  ggplot(mydata, aes(x = Year, y=GDPpercapita, fill=Region, color=Region)) +
+#  geom_line(lwd = .8) +
+#   labs(x = "Year", y = "GDP per capita")
 ```
 
 The comparison shows that Germany and Finland are fairly similar in terms of GDP per capita.
@@ -192,9 +192,9 @@ In this plot we see that Finland and Romania are relatively close, while there i
 The countries are of different sizes, and the population is a factor of central importance for the production of gdp as shown in the previous plot.
 
 ```{r}
-  ggplot(mydata, aes(x = Year, y=GDP, fill=Region, color=Region)) +
-  geom_line(lwd = .8) +
-   labs(x = "Year", y = "GDP")
+#  ggplot(mydata, aes(x = Year, y=GDP, fill=Region, color=Region)) +
+#  geom_line(lwd = .8) +
+#   labs(x = "Year", y = "GDP")
 ```
 
 In order to be able to compare the countries' gdp and get a realistic representation, it is central which factors are included in the plot.
@@ -210,9 +210,9 @@ Then we join this with the poulation data from the other file and use gini.wtd a
 ### Population plot
 
 ```{r}
- ggplot(mydata, aes(x = Year, y=Population, fill=Region, color=Region)) +
-  geom_line(lwd = .8) +
-   labs(x = "Year", y = "Population")
+# ggplot(mydata, aes(x = Year, y=Population, fill=Region, #color=Region)) +
+#  geom_line(lwd = .8) +
+#   labs(x = "Year", y = "Population")
 ```
 
 ```{r}
