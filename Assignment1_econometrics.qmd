@@ -249,9 +249,9 @@ ginidata <- ginidata %>%
 
 ```
 
-### Description of ginie dataset
+### Description of Ginie dataset
 
-The new data is a table with three columns, nuts2 string, Year and the gini calculation.
+The new data is a table with three columns, nuts2 string, Year and the Ginie calculation.
 All three countries in our group are in the same table and contains 1020 rows.
 
 ```{r}
