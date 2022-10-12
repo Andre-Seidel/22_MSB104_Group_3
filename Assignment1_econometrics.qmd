@@ -36,11 +36,18 @@ library(dineq)
 ```
 
 The files contain different data.
-Nama_10r_3gdp contains GDP data on nuts3 level for many countries and contains multiple columns. The values we are looking for seems to be in the column named OBS_VALUE and the region is in a column named geo. There is also a column for year named TIME_PERIOD.
+Nama_10r_3gdp contains GDP data on nuts3 level for many countries and contains multiple columns.
+The values we are looking for seems to be in the column named OBS_VALUE and the region is in a column named geo.
+There is also a column for year named TIME_PERIOD.
 
-There are different types of GDP values and the unit is stored in a column named unit. We have chosen to use values where unit is MIO_EUR. 
+There are different types of GDP values and the unit is stored in a column named unit.
+We have chosen to use values where unit is MIO_EUR.
 
-demo_r\_pjanaggr3 contains population data on nuts3 level and contains similar coulmns as the other file with the same names for value, region and year. This file also have multiple values with different groupings. There is a column named age for age groups. We have chosen rows there age is TOTAL. There is also another column for sex and we have chosen rows where sex == T which looks like the total value for both males and females.
+demo_r\_pjanaggr3 contains population data on nuts3 level and contains similar coulmns as the other file with the same names for value, region and year.
+This file also have multiple values with different groupings.
+There is a column named age for age groups.
+We have chosen rows there age is TOTAL.
+There is also another column for sex and we have chosen rows where sex == T which looks like the total value for both males and females.
 
 ### Reading in data sets and renaming columns
 
@@ -76,7 +83,8 @@ mydata <- mydata %>%
   select(Year, Region, GDP,Population)
 ```
 
-We now have a dataset with combined GDP and population values. It looks like this:
+We now have a dataset with combined GDP and population values.
+It looks like this:
 
 ```{r}
 mydata
@@ -149,10 +157,11 @@ mydata %>%
    labs(x = "Year", y = "GDP per capita")
 ```
 
-
 ## Calculate GDP Ginie coefficients for nuts2 level
 
-To calculate GDP Ginie coefficients for nuts2 level, we need to get the GDP data for our three countries on a nuts3 level first. We filter lines by using grepl and create a nuts2 level string using str_sub. Then we join this with the poulation data from the other file and use gini.wtd and group_by to calculate the coefficients.
+To calculate GDP Ginie coefficients for nuts2 level, we need to get the GDP data for our three countries on a nuts3 level first.
+We filter lines by using grepl and create a nuts2 level string using str_sub.
+Then we join this with the poulation data from the other file and use gini.wtd and group_by to calculate the coefficients.
 
 ```{r}
 ginidata <- gdpdata %>%
@@ -180,7 +189,8 @@ ginidata <- ginidata %>%
 
 ### Description of gini dataset
 
-The new data is a table with three columns, nuts2 string, Year and the gini calculation. All three countries are in the same table and contains 1020 rows.
+The new data is a table with three columns, nuts2 string, Year and the gini calculation.
+All three countries are in the same table and contains 1020 rows.
 
 ```{r}
 ginidata
@@ -191,7 +201,8 @@ ginidata %>%
 
 ### Distribution of GDP Ginie coefficients
 
-####  GDP Ginie coefficients Germany
+#### GDP Ginie coefficients Germany
+
 ```{r}
 germany <- ginidata %>%
   filter(grepl("DE..", nuts2))
@@ -205,7 +216,7 @@ germany %>%
    labs(x = "Year", y = "GDP")
 ```
 
-####  GDP Ginie coefficients Finland
+#### GDP Ginie coefficients Finland
 
 ```{r}
 finland <- ginidata %>%
@@ -220,7 +231,7 @@ finland %>%
    labs(x = "Year", y = "GDP")
 ```
 
-####  GDP Ginie coefficients Romania
+#### GDP Ginie coefficients Romania
 
 ```{r}
 romania <- ginidata %>%
@@ -234,12 +245,13 @@ romania %>%
    labs(x = "Year", y = "GDP")
 ```
 
-
 ## Outliers in data set
 
-For Germany there are at least two regions that stick out from the rest when looking at the plot. They are difficult to identify graphically, but we can check the data to find those with zero values.
+For Germany there are at least two regions that stick out from the rest when looking at the plot.
+They are difficult to identify graphically, but we can check the data to find those with zero values.
 
 These are the regions that are potential outliers in the german dataset:
+
 ```{r}
 germanoutliers <- germany %>%
   filter(gini==0) %>%
@@ -250,8 +262,7 @@ germanoutliers
 
 We can see from the plot that at least two of these seems to be missing date for several years.
 
-
-We can do the same for Finland. 
+We can do the same for Finland.
 
 ```{r}
 finlandoutliers <- finland %>%
@@ -261,6 +272,7 @@ finlandoutliers <- finland %>%
 finlandoutliers
 ```
 
-This gives two candidate regions as outliers. At least FI20 looks like it is zeros for all years.
+This gives two candidate regions as outliers.
+At least FI20 looks like it is zeros for all years.
 
 For Romania there is no clear outliers.
