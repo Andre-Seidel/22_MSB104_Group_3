@@ -1,6 +1,9 @@
 ---
 title: "Assignment_econometrics_Malenesr-and-Raojiaxiu"
-format: html
+format:
+  html:
+    code-fold: true
+    code-summary: "Show the code"
 # documentclass: article
 classoption: 
   - '12pt'
