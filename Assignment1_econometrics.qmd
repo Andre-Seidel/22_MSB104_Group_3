@@ -47,10 +47,10 @@ Next, we will present the datasets and their content.
 Nama_10r_3gdp contains GDP data on nuts3 level for many countries.
 The data set is structured in different columns that present different data values.
 in this assignment, the following values are relevant to us: The GDP values we are looking for emerges from the column "OBS_VALUE".
-The column "GEO" tells which geographical region the values belong to.
+The column "GEO" tells which geographical region the values belong to. In the file there are rows for nuts0 to nuts3 level, for instance DE, DE1, DE11 and DE111.
 There is also a column for year named "TIME_PERIOD".
 There are different types of GDP values and the unit is stored in a column named "UNIT".
-We have chosen to use values where unit is MIO_EUR.
+We have chosen to use values where unit is MIO_EUR. This unit represents the GDP value in million euros.
 
 Demo_r\_pjanaggr3 contains population data on nuts3 level.
 The structure is similar to the previous dataset we presented and contains columns as the other file with the same names for value, region and year.
