@@ -177,7 +177,7 @@ mydata %>%
 ### GDP plot
 
 ```{r}
-  ggplot(mydata, aes(x = Year, y=GDP, fill=Country, color=Country)) +
+  ggplot(mydata, aes(x = Year, y=GDP, fill=Region, color=Region)) +
   geom_line(lwd = .8) +
    labs(x = "Year", y = "GDP")
 ```
@@ -191,7 +191,7 @@ Then we join this with the poulation data from the other file and use gini.wtd a
 ### Population plot
 
 ```{r}
- ggplot(mydata, aes(x = Year, y=Population, fill=Country, color=Country)) +
+ ggplot(mydata, aes(x = Year, y=Population, fill=Region, color=Region)) +
   geom_line(lwd = .8) +
    labs(x = "Year", y = "Population")
 ```
