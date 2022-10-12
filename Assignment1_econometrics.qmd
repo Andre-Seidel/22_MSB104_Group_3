@@ -249,7 +249,7 @@ ginidata <- ginidata %>%
 
 ```
 
-### Description of gini dataset
+### Description of ginie dataset
 
 The new data is a table with three columns, nuts2 string, Year and the gini calculation.
 All three countries in our group are in the same table and contains 1020 rows.
@@ -263,7 +263,7 @@ ginidata %>%
 
 ### Distribution of GDP Ginie coefficients
 
-By sorting the data shown in the table above, we can present a more clear presentation of the data for each of the three countries included.
+By filtering the data shown in the table above, we can present a more clear presentation of the data for each of the three countries included.
 
 #### GDP Ginie coefficients Germany
 
@@ -273,8 +273,11 @@ germany <- ginidata %>%
 
 germany %>%
   vtable::st(.)
+```
 
+The following plot shows GDP Ginie coefficients for the different regions for all years. Here we can see that one region have a much higher result then the rest. We also see that some regions have a zero value.
 
+```{r}
   ggplot(germany, aes(x = Year, y=gini, fill=nuts2, color=nuts2)) +
   geom_point(lwd = .8) +
    labs(x = "Year", y = "GDP")
@@ -288,8 +291,9 @@ finland <- ginidata %>%
 
 finland %>%
   vtable::st(.)
-
-
+```
+The following plot shows that at least one region have zero values that we need to check.
+```{r}
   ggplot(finland, aes(x = Year, y=gini, fill=nuts2, color=nuts2)) +
   geom_point(lwd = .8) +
    labs(x = "Year", y = "GDP")
@@ -303,7 +307,9 @@ romania <- ginidata %>%
 
 romania %>%
   vtable::st(.)
-
+```
+If we plot our results for Romania we do see that one region have a clear improvement from around 2007. However the max value for Ginie in this country is only 0.379 and the differences are not that big.
+```{r}
   ggplot(romania, aes(x = Year, y=gini, fill=nuts2, color=nuts2)) +
   geom_point(lwd = .8) +
    labs(x = "Year", y = "GDP")
