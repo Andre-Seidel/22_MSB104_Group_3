@@ -225,14 +225,6 @@ To calculate GDP Ginie coefficients for nuts2 level, we need to get the GDP data
 We filter lines by using grepl and create a nuts2 level string using str_sub.
 Then we join this with the poulation data from the other file and use gini.wtd and group_by to calculate the coefficients.
 
-### Population plot
-
-```{r}
-# ggplot(mydata, aes(x = Year, y=Population, fill=Region, #color=Region)) +
-#  geom_line(lwd = .8) +
-#   labs(x = "Year", y = "Population")
-```
-
 ```{r}
 ginidata <- gdpdata %>%
   select(Year, Region, GDP, unit) %>%
