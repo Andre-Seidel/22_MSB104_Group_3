@@ -81,8 +81,8 @@ populationdata <- populationfile %>%
 mydata <- gdpdata %>%
   # select only columns we need
   select(Year, Region, GDP, unit) %>%
-  # select rows with MIO_EUR and the countries we need
-  filter(unit =='MIO_EUR' & Region %in% c('DE', 'FI', 'RO'))
+  # select rows with MIO_EUR and the regions we need
+  filter(unit =='MIO_EUR' & (grepl('DE...', Region) | grepl('FI...', Region) | grepl('RO...', Region)))
 
 mydata <- mydata %>%
   # combine gdpr data with population data with the same year and region
@@ -144,7 +144,7 @@ mydata <- mydata %>%
 
 ```{r}
 mydata %>%
-  filter(Region=='DE') %>%
+  filter(grepl("DE...", Region)) %>%
   select(-Region) %>%
   vtable::st(.)
 ```
@@ -154,7 +154,7 @@ mydata %>%
 ```{r}
 
 mydata %>%
-  filter(Region=='FI') %>%
+  filter(grepl("FI...", Region)) %>%
   select(-Region) %>%
   vtable::st(.)
 ```
@@ -163,7 +163,7 @@ mydata %>%
 
 ```{r}
 mydata %>%
-  filter(Region=='RO') %>%
+  filter(grepl("RO...", Region)) %>%
   select(-Region) %>%
   vtable::st(.)
 ```
