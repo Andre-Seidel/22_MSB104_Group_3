@@ -375,7 +375,7 @@ romania %>%
 The three wealthiest regions in Romania are:
   
 ```{r}
-romania2019 <- finland %>%
+romania2019 <- romania %>%
     filter(Year==2019) %>%
    select(nuts2, gini)%>%
   as.data.frame()
