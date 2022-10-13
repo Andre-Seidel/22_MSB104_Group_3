@@ -21,12 +21,13 @@ abstract: 'This assignment will study GDP in the following countries: Germany, F
 
 ## Introduction
 
-This assignment is the first part of a total of four assignments to be delivered in the subject econometrics as a final exam.
+This assignment consist of four parts where we will explore data sets from Eurostat and perform analysis to find statistic information.
+
 The assignment will be built on as the various tasks are solved and presented as a complete quarto document at the end of the semester.
 
 ### Assignment 1
 
-In this assignment we will study sub-national gdp in the countries Germany, Finland and Romania using the data sets "Nama_10r_3gdp" and "demo_r\_pjanaggr3" obtained from Eurostat.
+In this first assignment we will study sub-national gdp in the countries Germany, Finland and Romania using the data sets "Nama_10r_3gdp" and "demo_r\_pjanaggr3" obtained from Eurostat.
 Below we will present which packages we have used to read and process the data we have used in the task, in addition to showing the procedure for how we have obtained new data.
 The results will be presented at the end of the assignment, along with a description and discussion of the included data.
 
