@@ -327,11 +327,13 @@ These are the five most equal regions
 slice_min(germany2019, gini, n=5)
 ```
 
-There are two regions with a perfect score of 0.0. This could be an indicator that there is something wrong or missing in the data set for these regions.
+There are two regions with a perfect score of 0.0. This could be an indicator that there is something wrong or missing in the data set for these regions in the selected year. Also see below where we look for zero values in all Ginie results to find potential outliers.
 
 The following plot shows GDP Ginie coefficients for the different regions for all years.
-Here we can see that one region have a much higher result then the rest.
+Here we can see how DE21 have a much higher result then the rest.
 We also see the two regions that have a zero value.
+
+For Germany we see there are some differences in equality between regions. 
 
 ```{r}
   ggplot(germany, aes(x =Year, y=gini, fill=nuts2, color=nuts2)) +
@@ -365,9 +367,11 @@ These are the five most equal regions
 slice_min(finland2019, gini, n=5)
 ```
 
-We can see that Finland also have two regions with a perfect score of 0.0. Here we also suspect that there is something missing in the data set.
+We can see that Finland also have two regions with a perfect score of 0.0. Here we also suspect that there is something missing in the data set. We investigate this further in then next chapter looking for potential outliers in the dataset.
 
 The following plot showing all regions in Finland also shows the two regions that have zero values that we need to check.
+
+It is clear that there is little difference in equality between regions in Finland.
 
 ```{r}
   ggplot(finland, aes(x = Year, y=gini, fill=nuts2, color=nuts2)) +
@@ -402,7 +406,7 @@ slice_min(romania2019, gini, n=3)
 
 
 If we plot our results for Romania we do see that one region have a clear improvement from around 2007.
-However the max value for Ginie in this country is only 0.379 and the differences are not that big.
+However the max value for Ginie in this country is only 0.379 and the differences are not that big, but still there is a gap between the most and least equal regions.
 
 ```{r}
   ggplot(romania, aes(x = Year, y=gini, fill=nuts2, color=nuts2)) +
