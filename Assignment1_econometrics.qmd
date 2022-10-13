@@ -51,20 +51,26 @@ Next, we will present the datasets and their content.
 Nama_10r_3gdp contains GDP data on nuts3 level for many countries.
 The data set is structured in different columns that present different data values.
 in this assignment, the following values are relevant to us: The GDP values we are looking for emerges from the column "OBS_VALUE".
-The column "GEO" tells which geographical region the values belong to. In the file there are rows for nuts0 to nuts3 level, for instance DE, DE1, DE11 and DE111.
+The column "geo" tells which geographical region the values belong to.
+In the file there are rows for nuts0 to nuts3 level, for instance DE, DE1, DE11 and DE111.
 There is also a column for year named "TIME_PERIOD".
 There are different types of GDP values and the unit is stored in a column named "UNIT".
-We have chosen to use values where unit is MIO_EUR. This unit represents the GDP value in million euros.
+We have chosen to use values where unit is MIO_EUR.
+This unit represents the GDP value in million euros.
+Furthermore, we examine whether the datasets have taken inflation into account using metadata.
+Nama_10_3gdp takes inflation into account when it comes to the unit of measure "price figure" in the data set, while volume figures are presented excluding inflation.
 
 Demo_r\_pjanaggr3 contains population data on nuts3 level.
 The structure is similar to the previous dataset we presented and contains columns as the other file with the same names for value, region and year.
 This file also have multiple values with different groupings.
 We specify which choices we have made regarding which data is used:
 
-There is a column named "AGE" for age groups.
+There is a column named "age" for age groups.
 We have chosen the rows where the age is TOTAL.
 Further there is a column for sex and we have choosen rows where sex = T.
 T refers to the total value for both males and females.
+The data set Demo_r\_pjanaggr3 does not take inflation into account.
+The information that emerges from the data set deals with population data, which is not directly covered by inflation.
 
 ### Reading in data sets and renaming columns
 
@@ -120,7 +126,6 @@ mydata %>%
 We are now left with a data set that has combined the relevant data from both the Nama_10r_3gdp and Demo_r\_pjanaggr3 data sets.
 We can use this data set to create plots with GDP and population value to present the values in a structured way.
 
-
 ## Calculate GDP per capita
 
 To calculate GDP per capita we use the following formula: We multiply the GDP value with 1 million since it is in million euro and dividing by the population value.
@@ -132,7 +137,8 @@ mydata <- mydata %>%
   mutate(GDPpercapita = 1000000 * GDP / Population) 
 ```
 
-Since we now have GDP per capita for each region, for each year, we can for example find the wealthiest and least wealthiest regioens for a given year. We chose 2019 to investigate our results.
+Since we now have GDP per capita for each region, for each year, we can for example find the wealthiest and least wealthiest regioens for a given year.
+We chose 2019 to investigate our results.
 
 ### GDP per capita for Germany:
 
@@ -143,7 +149,9 @@ mydata %>%
   vtable::st(.)
 ```
 
+
  The three wealthiest regions in Germany are:
+
 ```{r}
 dedata <- mydata%>%
   filter(grepl("DE...", Region)) %>%
@@ -154,7 +162,9 @@ slice_max(dedata, GDPpercapita, n=3)
 
 ```
 
+
 These are the three least wealthiest regions
+
 ```{r}
 slice_min(dedata, GDPpercapita, n=3)
 
@@ -171,6 +181,7 @@ mydata %>%
 ```
 
 The three wealthiest regions in Finland are:
+
 ```{r}
 fidata <- mydata%>%
   filter(grepl("FI...", Region)) %>%
@@ -181,11 +192,11 @@ slice_max(fidata, GDPpercapita, n=3)
 ```
 
 These are the three least wealthiest regions
+
 ```{r}
 slice_min(fidata, GDPpercapita, n=3)
 
 ```
-
 
 ### GDP per capita for Romania:
 
@@ -209,6 +220,7 @@ slice_max(rodata, GDPpercapita, n=3)
 ```
 
  These are the three least wealthiest regions
+
 ```{r}
 slice_min(rodata, GDPpercapita, n=3)
 
@@ -230,7 +242,6 @@ There is a large gap between the above-mentioned countries and Romania, where th
 
 By looking at GDP per capita, the plot will take into account the population of the country and give a realistic picture of the actual level of GDP.
 This makes it possible to give a realistic comparison of the countries in our group, even if the countries are of different sizes.
-
 
 ## Calculate GDP Ginie coefficients for nuts2 level
 
@@ -305,7 +316,9 @@ slice_min(germany2019, gini, n=3)
 ```
 
 
-The following plot shows GDP Ginie coefficients for the different regions for all years. Here we can see that one region have a much higher result then the rest. We also see that some regions have a zero value.
+The following plot shows GDP Ginie coefficients for the different regions for all years.
+Here we can see that one region have a much higher result then the rest.
+We also see that some regions have a zero value.
 
 ```{r}
   ggplot(germany, aes(x =Year, y=gini, fill=nuts2, color=nuts2)) +
@@ -339,9 +352,8 @@ These are the three least wealthiest regions
 slice_min(finland2019, gini, n=3)
 ```
 
-
-
 The following plot shows that at least one region have zero values that we need to check.
+
 ```{r}
   ggplot(finland, aes(x = Year, y=gini, fill=nuts2, color=nuts2)) +
   geom_point(lwd = .8) +
@@ -374,7 +386,9 @@ slice_min(romania2019, gini, n=3)
 ```
 
 
-If we plot our results for Romania we do see that one region have a clear improvement from around 2007. However the max value for Ginie in this country is only 0.379 and the differences are not that big.
+If we plot our results for Romania we do see that one region have a clear improvement from around 2007.
+However the max value for Ginie in this country is only 0.379 and the differences are not that big.
+
 ```{r}
   ggplot(romania, aes(x = Year, y=gini, fill=nuts2, color=nuts2)) +
   geom_point(lwd = .8) +
