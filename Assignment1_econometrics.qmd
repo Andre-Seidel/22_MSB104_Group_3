@@ -172,9 +172,11 @@ slice_min(dedata, GDPpercapita, n=3)
 
 ```
 
+
 There is quite a difference in wealth between regions in Germany.
 The investigation shows that there is more than 10 times higher GDP per capita in the most wealthy regions compared to the least wealthy regions.
 Germany is the country with the highest GDP per capita in the given group of countries we investigated.
+
 
 ### GDP per capita for Finland:
 
@@ -205,9 +207,11 @@ slice_min(fidata, GDPpercapita, n=3)
 
 ```
 
+
 From the investigation it appears that the difference between the most and least wealthy regions in Finland are far smaller compared to what we saw in Germany.
 We can see that the most wealthy regions is not even twice the value as the least wealthy regions.
 The regional differences related to how wealthy the regions are, are not conspicuously large in Finland.
+
 
 ### GDP per capita for Romania:
 
@@ -245,6 +249,7 @@ We can now compare the wealth of the three countries Germany, Finland and Romani
 The clearest finding is that Finland differs from the other countries, in that there are smaller differences in GDP per region than what appears in the other two countries.
 We can also see clear differences between the countries when it comes to GDP per capita.
 Germany has a much higher GDP per capita compared to both Finland and Romania.
+
 
 ### GDP per capita plot
 
@@ -343,6 +348,7 @@ germany2019 <- germany %>%
 slice_max(germany2019,gini,n=3)
 ```
 
+
 These are the five most equal regions in Germany:
 
 ```{r}
@@ -386,11 +392,13 @@ finland2019 <- finland %>%
 slice_max(finland2019,gini,n=3)
 ```
 
+
 These are the five most equal regions in Finland:
 
 ```{r}
 slice_min(finland2019, gini, n=5)
 ```
+
 
 We can see that Finland also have two regions with a perfect score of 0.0.
 In this case we also suspect that there is a lack of data in the data set.
@@ -400,6 +408,7 @@ The following plot showing all regions in Finland also shows the two regions tha
 
 From the investigations we have carried out, it is clear that there are small differences in equality between regions in Finland.
 This also appears clearly in the plot presented below.
+
 
 ```{r}
   ggplot(finland, aes(x = Year, y=gini, fill=nuts2, color=nuts2)) +
