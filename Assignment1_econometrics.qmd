@@ -311,7 +311,7 @@ germany %>%
   vtable::st(.)
 ```
 
-The three wealthiest regions in Germany are:
+The three most unequal regions in Germany are:
   
 ```{r}
 germany2019 <- germany %>%
@@ -322,7 +322,7 @@ germany2019 <- germany %>%
 slice_max(germany2019,gini,n=3)
 ```
 
-These are the three least wealthiest regions
+These are the three most equal regions
 ```{r}
 slice_min(germany2019, gini, n=3)
 ```
@@ -348,7 +348,7 @@ finland %>%
   vtable::st(.)
 ```
 
-The three wealthiest regions in Finland are:
+The three most unequal regions in Finland are:
   
 ```{r}
 finland2019 <- finland %>%
@@ -359,7 +359,7 @@ finland2019 <- finland %>%
 slice_max(finland2019,gini,n=3)
 ```
 
-These are the three least wealthiest regions
+These are the three most equal regions
 ```{r}
 slice_min(finland2019, gini, n=3)
 ```
@@ -381,7 +381,7 @@ romania <- ginidata %>%
 romania %>%
   vtable::st(.)
 ```
-The three wealthiest regions in Romania are:
+The three most unequal regions in Romania are:
   
 ```{r}
 romania2019 <- romania %>%
@@ -392,7 +392,7 @@ romania2019 <- romania %>%
 slice_max(romania2019,gini,n=3)
 ```
 
-These are the three least wealthiest regions
+These are the three most equal regions
 ```{r}
 slice_min(romania2019, gini, n=3)
 ```
