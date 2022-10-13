@@ -235,9 +235,18 @@ We present the results in a plot, where we collect GDP per capita for all three 
 This provides a clear presentation of the results, and simplifies the process of comparing the countries' level of GDP per capita.
 
 ```{r}
-#  ggplot(mydata, aes(x = Year, y=GDPpercapita, fill=Region, color=Region)) +
-#  geom_line(lwd = .8) +
-#   labs(x = "Year", y = "GDP per capita")
+gdppercapita_total <- gdpdata %>%
+  select(Year, Region, GDP, unit) %>%
+  filter(unit =='MIO_EUR' & (Region %in% c("DE", "FI", "RO"))) %>%
+  left_join(populationdata, by=c("Year","Region"),
+            suffix = c("","_population")) %>%
+  filter(age=='TOTAL' & sex=='T') %>%
+  select(Year, Region, GDP,Population) %>%
+  mutate(GDPpercapita = 1000000 * GDP / Population) 
+
+  ggplot(gdppercapita_total, aes(x = Year, y=GDPpercapita, fill=Region, color=Region)) +
+  geom_line(lwd = .8) +
+   labs(x = "Year", y = "GDP per capita")
 ```
 
 The comparison shows that Germany and Finland are fairly similar in terms of GDP per capita.
