@@ -21,12 +21,13 @@ abstract: 'This assignment will study GDP in the following countries: Germany, F
 
 ## Introduction
 
-This assignment is the first part of a total of four assignments to be delivered in the subject econometrics as a final exam.
+This assignment consist of four parts where we will explore data sets from Eurostat and perform analysis to find statistic information.
+
 The assignment will be built on as the various tasks are solved and presented as a complete quarto document at the end of the semester.
 
 ### Assignment 1
 
-In this assignment we will study sub-national gdp in the countries Germany, Finland and Romania using the data sets "Nama_10r_3gdp" and "demo_r\_pjanaggr3" obtained from Eurostat.
+In this first assignment we will study sub-national gdp in the countries Germany, Finland and Romania using the data sets "Nama_10r_3gdp" and "demo_r\_pjanaggr3" obtained from Eurostat.
 Below we will present which packages we have used to read and process the data we have used in the task, in addition to showing the procedure for how we have obtained new data.
 The results will be presented at the end of the assignment, along with a description and discussion of the included data.
 
@@ -74,11 +75,8 @@ The information that emerges from the data set deals with population data, which
 
 ### Reading in data sets and renaming columns
 
-We begin the work on this assignment by loading relevant datasets.
-In this task we will use the packages mentioned above: Nama_10_3gdp and Demo_r\_pjanaggr3.
-Below we show the codes we have used to load the data.
-
-```{r}
+```{r messages = FALSE}
+#| echo: false
 # read data from files
 gdpfile <- read_csv('NAMA_10R_3GDP.csv')
 populationfile <- read_csv('DEMO_R_PJANAGGR3.csv')
@@ -142,7 +140,7 @@ mydata <- mydata %>%
 ```
 
 We are now left with information on GDP per capita in the three regions in our group for each year selected from the data set.
-With this information, it is possible to filter data so that we can, for example, find the wealthiest and least wealthiest regions for a given year.
+With this information it is possible to filter data so that we can, for example, find the wealthiest and least wealthiest regions for a given year.
 To illustrate, we chose the year 2019 to investigate our results.
 
 ### GDP per capita for Germany:
@@ -154,24 +152,29 @@ mydata %>%
   vtable::st(.)
 ```
 
-The three wealthiest regions in Germany are:
+The three wealthiest regions in Germany are shown below:
 
 ```{r}
 dedata <- mydata%>%
   filter(grepl("DE...", Region)) %>%
   filter(Year==2019) %>%
-  select(Region, GDPpercapita)
+  select(Region, GDPpercapita) %>%
+  as.data.frame()
 
 slice_max(dedata, GDPpercapita, n=3)
 
 ```
 
-These are the three least wealthiest regions
+These are the three least wealthiest regions in Germany:
 
 ```{r}
 slice_min(dedata, GDPpercapita, n=3)
 
 ```
+
+There is quite a difference in wealth between regions in Germany.
+The investigation shows that there is more than 10 times higher GDP per capita in the most wealthy regions compared to the least wealthy regions.
+Germany is the country with the highest GDP per capita in the given group of countries we investigated.
 
 ### GDP per capita for Finland:
 
@@ -183,23 +186,28 @@ mydata %>%
   vtable::st(.)
 ```
 
-The three wealthiest regions in Finland are:
+The three wealthiest regions in Finland are shown below:
 
 ```{r}
 fidata <- mydata%>%
   filter(grepl("FI...", Region)) %>%
   filter(Year==2019) %>%
-  select(Region, GDPpercapita)
+  select(Region, GDPpercapita) %>%
+  as.data.frame()
 
 slice_max(fidata, GDPpercapita, n=3)
 ```
 
-These are the three least wealthiest regions
+These are the three least wealthiest regions in Finland:
 
 ```{r}
 slice_min(fidata, GDPpercapita, n=3)
 
 ```
+
+From the investigation it appears that the difference between the most and least wealthy regions in Finland are far smaller compared to what we saw in Germany.
+We can see that the most wealthy regions is not even twice the value as the least wealthy regions.
+The regional differences related to how wealthy the regions are, are not conspicuously large in Finland.
 
 ### GDP per capita for Romania:
 
@@ -210,24 +218,33 @@ mydata %>%
   vtable::st(.)
 ```
 
-The three wealthiest regions in Romania are:
+The three wealthiest regions in Romania are shown below:
 
 ```{r}
 rodata <- mydata%>%
   filter(grepl("RO...", Region)) %>%
   filter(Year==2019) %>%
-  select(Region, GDPpercapita)
+  select(Region, GDPpercapita) %>%
+  as.data.frame()
 
 slice_max(rodata, GDPpercapita, n=3)
 
 ```
 
-These are the three least wealthiest regions
+These are the three least wealthiest regions in Romania:
 
 ```{r}
 slice_min(rodata, GDPpercapita, n=3)
 
 ```
+
+For Romania there is a big difference between the most and least wealthiest regions.
+We also see that the most wealthy region has double the GDP per capita as the second most wealthy.
+
+We can now compare the wealth of the three countries Germany, Finland and Romania using the investigations shown above.
+The clearest finding is that Finland differs from the other countries, in that there are smaller differences in GDP per region than what appears in the other two countries.
+We can also see clear differences between the countries when it comes to GDP per capita.
+Germany has a much higher GDP per capita compared to both Finland and Romania.
 
 ### GDP per capita plot
 
@@ -235,9 +252,18 @@ We present the results in a plot, where we collect GDP per capita for all three 
 This provides a clear presentation of the results, and simplifies the process of comparing the countries' level of GDP per capita.
 
 ```{r}
-#  ggplot(mydata, aes(x = Year, y=GDPpercapita, fill=Region, color=Region)) +
-#  geom_line(lwd = .8) +
-#   labs(x = "Year", y = "GDP per capita")
+gdppercapita_total <- gdpdata %>%
+  select(Year, Region, GDP, unit) %>%
+  filter(unit =='MIO_EUR' & (Region %in% c("DE", "FI", "RO"))) %>%
+  left_join(populationdata, by=c("Year","Region"),
+            suffix = c("","_population")) %>%
+  filter(age=='TOTAL' & sex=='T') %>%
+  select(Year, Region, GDP,Population) %>%
+  mutate(GDPpercapita = 1000000 * GDP / Population) 
+
+  ggplot(gdppercapita_total, aes(x = Year, y=GDPpercapita, fill=Region, color=Region)) +
+  geom_line(lwd = .8) +
+   labs(x = "Year", y = "GDP per capita")
 ```
 
 The comparison shows that Germany and Finland are fairly similar in terms of GDP per capita.
@@ -245,6 +271,8 @@ There is a large gap between the above-mentioned countries and Romania, where th
 
 By looking at GDP per capita, the plot will take into account the population of the country and give a realistic picture of the actual level of GDP.
 This makes it possible to give a realistic comparison of the countries in our group, even if the countries are of different sizes.
+It is far easier to show a realistic representation of GDP in the countries by presenting it in a plot.
+here you can clearly see the differences between the countries when factors with an influence on the plot, such as population, are included.
 
 ## Calculate GDP Ginie coefficients for nuts2 level
 
@@ -278,8 +306,9 @@ ginidata <- ginidata %>%
 
 ### Description of Ginie dataset
 
-The new data is a table with three columns, nuts2 string, Year and the Ginie calculation.
-All three countries in our group are in the same table and contains 1020 rows.
+The new data is presented in a table with three columns: "nuts2 string", "Year" and the "Ginie calculation".
+All three countries belonging to our group are presented below in the same table.
+The table contains 1020 rows.
 
 ```{r}
 ginidata
@@ -291,6 +320,7 @@ ginidata %>%
 ### Distribution of GDP Ginie coefficients
 
 By filtering the data shown in the table above, we can present a more clear presentation of the data for each of the three countries included.
+We filter the data for each of the countries in our group, and present the results below:
 
 #### GDP Ginie coefficients Germany
 
@@ -302,7 +332,7 @@ germany %>%
   vtable::st(.)
 ```
 
-The three wealthiest regions in Germany are:
+The three most unequal regions in Germany are:
 
 ```{r}
 germany2019 <- germany %>%
@@ -313,15 +343,21 @@ germany2019 <- germany %>%
 slice_max(germany2019,gini,n=3)
 ```
 
-These are the three least wealthiest regions
+These are the five most equal regions in Germany:
 
 ```{r}
-slice_min(germany2019, gini, n=3)
+slice_min(germany2019, gini, n=5)
 ```
 
+There are two regions with a perfect score of 0.0.
+This may be an indicator of missing data in the data set for these regions in the selected time period.
+Also see below at point "Outliers in data set" where we search for zero values in all Ginie results to find potential outliers in the data set.
+
 The following plot shows GDP Ginie coefficients for the different regions for all years.
-Here we can see that one region have a much higher result then the rest.
-We also see that some regions have a zero value.
+Here we can see how DE21 have a much higher result then the rest.
+It also shows which two regions have values equal to zero.
+
+For Germany we see there are some differences in equality between regions.
 
 ```{r}
   ggplot(germany, aes(x =Year, y=gini, fill=nuts2, color=nuts2)) +
@@ -339,7 +375,7 @@ finland %>%
   vtable::st(.)
 ```
 
-The three wealthiest regions in Finland are:
+The three most unequal regions in Finland are:
 
 ```{r}
 finland2019 <- finland %>%
@@ -350,13 +386,20 @@ finland2019 <- finland %>%
 slice_max(finland2019,gini,n=3)
 ```
 
-These are the three least wealthiest regions
+These are the five most equal regions in Finland:
 
 ```{r}
-slice_min(finland2019, gini, n=3)
+slice_min(finland2019, gini, n=5)
 ```
 
-The following plot shows that at least one region have zero values that we need to check.
+We can see that Finland also have two regions with a perfect score of 0.0.
+In this case we also suspect that there is a lack of data in the data set.
+We investigate this further in then next chapter where we look for potential outliers in the dataset.
+
+The following plot showing all regions in Finland also shows the two regions that have zero values that we need to check.
+
+From the investigations we have carried out, it is clear that there are small differences in equality between regions in Finland.
+This also appears clearly in the plot presented below.
 
 ```{r}
   ggplot(finland, aes(x = Year, y=gini, fill=nuts2, color=nuts2)) +
@@ -374,10 +417,10 @@ romania %>%
   vtable::st(.)
 ```
 
-The three wealthiest regions in Romania are:
+The three most unequal regions in Romania are:
 
 ```{r}
-romania2019 <- finland %>%
+romania2019 <- romania %>%
     filter(Year==2019) %>%
    select(nuts2, gini)%>%
   as.data.frame()
@@ -385,14 +428,19 @@ romania2019 <- finland %>%
 slice_max(romania2019,gini,n=3)
 ```
 
-These are the three least wealthiest regions
+These are the three most equal regions in Romania:
 
 ```{r}
 slice_min(romania2019, gini, n=3)
 ```
 
 If we plot our results for Romania we do see that one region have a clear improvement from around 2007.
-However the max value for Ginie in this country is only 0.379 and the differences are not that big.
+However the max value for Ginie in this country is only 0.379.
+The differences are not that big in Romania, but a gap still appears between the most and least equal regions in the country.
+
+We can see that no zero values appear in this table.
+This indicates that there are no outliers in the data set.
+We investigate this further in the next section.
 
 ```{r}
   ggplot(romania, aes(x = Year, y=gini, fill=nuts2, color=nuts2)) +
@@ -424,7 +472,7 @@ Both the graphical representation in the plot and the examination of data throug
 
 #### Outliers Finland
 
-We are doing the same survey for Finland, to see if there are potential outliers there as well
+We carry out the same survey for Finland, to uncover potential outliers in the data:
 
 ```{r}
 finlandoutliers <- finland %>%
@@ -450,3 +498,7 @@ romaniaoutliers <- romania %>%
 
 romaniaoutliers
 ```
+
+We can see that there are outliers for both Germany and Finland.
+In Romania we have not uncovered any outliers.
+It is challenging to confirm which factors lead to the discovery of outliers in the data, but it is likely to think that insufficient information in the data set about the given time period (year) is important for otuliers to occur.
