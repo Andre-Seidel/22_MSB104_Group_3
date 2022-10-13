@@ -74,6 +74,10 @@ The information that emerges from the data set deals with population data, which
 
 ### Reading in data sets and renaming columns
 
+We begin the work on this assignment by loading relevant datasets.
+In this task we will use the packages mentioned above: Nama_10_3gdp and Demo_r\_pjanaggr3.
+Below we show the codes we have used to load the data.
+
 ```{r}
 # read data from files
 gdpfile <- read_csv('NAMA_10R_3GDP.csv')
@@ -137,8 +141,9 @@ mydata <- mydata %>%
   mutate(GDPpercapita = 1000000 * GDP / Population) 
 ```
 
-Since we now have GDP per capita for each region, for each year, we can for example find the wealthiest and least wealthiest regioens for a given year.
-We chose 2019 to investigate our results.
+We are now left with information on GDP per capita in the three regions in our group for each year selected from the data set.
+With this information, it is possible to filter data so that we can, for example, find the wealthiest and least wealthiest regions for a given year.
+To illustrate, we chose the year 2019 to investigate our results.
 
 ### GDP per capita for Germany:
 
@@ -149,8 +154,7 @@ mydata %>%
   vtable::st(.)
 ```
 
-
- The three wealthiest regions in Germany are:
+The three wealthiest regions in Germany are:
 
 ```{r}
 dedata <- mydata%>%
@@ -161,7 +165,6 @@ dedata <- mydata%>%
 slice_max(dedata, GDPpercapita, n=3)
 
 ```
-
 
 These are the three least wealthiest regions
 
@@ -207,7 +210,7 @@ mydata %>%
   vtable::st(.)
 ```
 
- The three wealthiest regions in Romania are:
+The three wealthiest regions in Romania are:
 
 ```{r}
 rodata <- mydata%>%
@@ -219,7 +222,7 @@ slice_max(rodata, GDPpercapita, n=3)
 
 ```
 
- These are the three least wealthiest regions
+These are the three least wealthiest regions
 
 ```{r}
 slice_min(rodata, GDPpercapita, n=3)
@@ -300,7 +303,7 @@ germany %>%
 ```
 
 The three wealthiest regions in Germany are:
-  
+
 ```{r}
 germany2019 <- germany %>%
     filter(Year==2019) %>%
@@ -311,10 +314,10 @@ slice_max(germany2019,gini,n=3)
 ```
 
 These are the three least wealthiest regions
+
 ```{r}
 slice_min(germany2019, gini, n=3)
 ```
-
 
 The following plot shows GDP Ginie coefficients for the different regions for all years.
 Here we can see that one region have a much higher result then the rest.
@@ -337,7 +340,7 @@ finland %>%
 ```
 
 The three wealthiest regions in Finland are:
-  
+
 ```{r}
 finland2019 <- finland %>%
     filter(Year==2019) %>%
@@ -348,6 +351,7 @@ slice_max(finland2019,gini,n=3)
 ```
 
 These are the three least wealthiest regions
+
 ```{r}
 slice_min(finland2019, gini, n=3)
 ```
@@ -369,8 +373,9 @@ romania <- ginidata %>%
 romania %>%
   vtable::st(.)
 ```
+
 The three wealthiest regions in Romania are:
-  
+
 ```{r}
 romania2019 <- finland %>%
     filter(Year==2019) %>%
@@ -381,10 +386,10 @@ slice_max(romania2019,gini,n=3)
 ```
 
 These are the three least wealthiest regions
+
 ```{r}
 slice_min(romania2019, gini, n=3)
 ```
-
 
 If we plot our results for Romania we do see that one region have a clear improvement from around 2007.
 However the max value for Ginie in this country is only 0.379 and the differences are not that big.
