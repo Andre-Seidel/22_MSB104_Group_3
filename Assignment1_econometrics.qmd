@@ -57,6 +57,8 @@ There is also a column for year named "TIME_PERIOD".
 There are different types of GDP values and the unit is stored in a column named "UNIT".
 We have chosen to use values where unit is MIO_EUR.
 This unit represents the GDP value in million euros.
+Furthermore, we examine whether the datasets have taken inflation into account using metadata.
+Nama_10_3gdp takes inflation into account when it comes to the unit of measure "price figure" in the data set, while volume figures are presented excluding inflation.
 
 Demo_r\_pjanaggr3 contains population data on nuts3 level.
 The structure is similar to the previous dataset we presented and contains columns as the other file with the same names for value, region and year.
@@ -67,6 +69,8 @@ There is a column named "age" for age groups.
 We have chosen the rows where the age is TOTAL.
 Further there is a column for sex and we have choosen rows where sex = T.
 T refers to the total value for both males and females.
+The data set Demo_r\_pjanaggr3 does not take inflation into account.
+The information that emerges from the data set deals with population data, which is not directly covered by inflation.
 
 ### Reading in data sets and renaming columns
 
