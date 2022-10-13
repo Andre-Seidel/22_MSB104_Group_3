@@ -173,6 +173,8 @@ slice_min(dedata, GDPpercapita, n=3)
 
 ```
 
+There is quite a difference in wealth between regions in Germany. There is more than 10 times higher GDP per captia in the most wealthy region compared to the least wealthy.
+
 ### GDP per capita for Finland:
 
 ```{r}
@@ -202,6 +204,8 @@ slice_min(fidata, GDPpercapita, n=3)
 
 ```
 
+Compared to Germany there is not a big difference between the most and least wealthy regions inside Finland. The most wealthy is not even twice the value as the least wealthy.
+
 ### GDP per capita for Romania:
 
 ```{r}
@@ -230,6 +234,10 @@ slice_max(rodata, GDPpercapita, n=3)
 slice_min(rodata, GDPpercapita, n=3)
 
 ```
+
+For Romania there is a big difference between the most and least wealthiest regions. We also see that the most wealthy region has double the GDP per capita as the second most wealthy.
+
+Between the three countries we can see that Finland appears to have a lot less difference in wealth between regions than the other two.
 
 ### GDP per capita plot
 
