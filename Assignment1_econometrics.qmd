@@ -143,7 +143,7 @@ mydata %>%
   vtable::st(.)
 ```
 
-#### The three wealthiest regions in Germany are:
+ The three wealthiest regions in Germany are:
 ```{r}
 dedata <- mydata%>%
   filter(grepl("DE...", Region)) %>%
@@ -153,7 +153,8 @@ dedata <- mydata%>%
 slice_max(dedata, GDPpercapita, n=3)
 
 ```
-#### These are the three least wealthiest regions
+
+These are the three least wealthiest regions
 ```{r}
 slice_min(dedata, GDPpercapita, n=3)
 
@@ -168,7 +169,8 @@ mydata %>%
   select(-Region) %>%
   vtable::st(.)
 ```
-#### The three wealthiest regions in Finland are:
+
+The three wealthiest regions in Finland are:
 ```{r}
 fidata <- mydata%>%
   filter(grepl("FI...", Region)) %>%
@@ -177,7 +179,8 @@ fidata <- mydata%>%
 
 slice_max(fidata, GDPpercapita, n=3)
 ```
-#### These are the three least wealthiest regions
+
+These are the three least wealthiest regions
 ```{r}
 slice_min(fidata, GDPpercapita, n=3)
 
@@ -192,7 +195,8 @@ mydata %>%
   select(-Region) %>%
   vtable::st(.)
 ```
-#### The three wealthiest regions in Romania are:
+
+ The three wealthiest regions in Romania are:
 
 ```{r}
 rodata <- mydata%>%
@@ -204,7 +208,7 @@ slice_max(rodata, GDPpercapita, n=3)
 
 ```
 
-#### These are the three least wealthiest regions
+ These are the three least wealthiest regions
 ```{r}
 slice_min(rodata, GDPpercapita, n=3)
 
@@ -278,16 +282,33 @@ By filtering the data shown in the table above, we can present a more clear pres
 
 ```{r}
 germany <- ginidata %>%
-  filter(grepl("DE..", nuts2))
-
+  filter(grepl("DE..", nuts2)) 
+  
 germany %>%
   vtable::st(.)
 ```
 
+The three wealthiest regions in Germany are:
+  
+```{r}
+germany2019 <- germany %>%
+    filter(Year==2019) %>%
+   select(nuts2, gini)%>%
+  as.data.frame()
+
+slice_max(germany2019,gini,n=3)
+```
+
+These are the three least wealthiest regions
+```{r}
+slice_min(germany2019, gini, n=3)
+```
+
+
 The following plot shows GDP Ginie coefficients for the different regions for all years. Here we can see that one region have a much higher result then the rest. We also see that some regions have a zero value.
 
 ```{r}
-  ggplot(germany, aes(x = Year, y=gini, fill=nuts2, color=nuts2)) +
+  ggplot(germany, aes(x =Year, y=gini, fill=nuts2, color=nuts2)) +
   geom_point(lwd = .8) +
    labs(x = "Year", y = "GDP")
 ```
@@ -301,6 +322,25 @@ finland <- ginidata %>%
 finland %>%
   vtable::st(.)
 ```
+
+The three wealthiest regions in Finland are:
+  
+```{r}
+finland2019 <- finland %>%
+    filter(Year==2019) %>%
+   select(nuts2, gini)%>%
+  as.data.frame()
+
+slice_max(finland2019,gini,n=3)
+```
+
+These are the three least wealthiest regions
+```{r}
+slice_min(finland2019, gini, n=3)
+```
+
+
+
 The following plot shows that at least one region have zero values that we need to check.
 ```{r}
   ggplot(finland, aes(x = Year, y=gini, fill=nuts2, color=nuts2)) +
@@ -317,6 +357,23 @@ romania <- ginidata %>%
 romania %>%
   vtable::st(.)
 ```
+The three wealthiest regions in Romania are:
+  
+```{r}
+romania2019 <- finland %>%
+    filter(Year==2019) %>%
+   select(nuts2, gini)%>%
+  as.data.frame()
+
+slice_max(romania2019,gini,n=3)
+```
+
+These are the three least wealthiest regions
+```{r}
+slice_min(romania2019, gini, n=3)
+```
+
+
 If we plot our results for Romania we do see that one region have a clear improvement from around 2007. However the max value for Ginie in this country is only 0.379 and the differences are not that big.
 ```{r}
   ggplot(romania, aes(x = Year, y=gini, fill=nuts2, color=nuts2)) +
