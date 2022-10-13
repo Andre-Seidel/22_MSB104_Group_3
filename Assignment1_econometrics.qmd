@@ -156,7 +156,8 @@ mydata %>%
 dedata <- mydata%>%
   filter(grepl("DE...", Region)) %>%
   filter(Year==2019) %>%
-  select(Region, GDPpercapita)
+  select(Region, GDPpercapita) %>%
+  as.data.frame()
 
 slice_max(dedata, GDPpercapita, n=3)
 
@@ -186,7 +187,8 @@ The three wealthiest regions in Finland are:
 fidata <- mydata%>%
   filter(grepl("FI...", Region)) %>%
   filter(Year==2019) %>%
-  select(Region, GDPpercapita)
+  select(Region, GDPpercapita) %>%
+  as.data.frame()
 
 slice_max(fidata, GDPpercapita, n=3)
 ```
@@ -213,7 +215,8 @@ mydata %>%
 rodata <- mydata%>%
   filter(grepl("RO...", Region)) %>%
   filter(Year==2019) %>%
-  select(Region, GDPpercapita)
+  select(Region, GDPpercapita) %>%
+  as.data.frame()
 
 slice_max(rodata, GDPpercapita, n=3)
 
