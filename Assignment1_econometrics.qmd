@@ -74,7 +74,8 @@ The information that emerges from the data set deals with population data, which
 
 ### Reading in data sets and renaming columns
 
-```{r}
+```{r messages = FALSE}
+#| echo: false
 # read data from files
 gdpfile <- read_csv('NAMA_10R_3GDP.csv')
 populationfile <- read_csv('DEMO_R_PJANAGGR3.csv')
