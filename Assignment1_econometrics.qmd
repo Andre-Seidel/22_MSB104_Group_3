@@ -64,7 +64,7 @@ Nama_10_3gdp takes inflation into account when it comes to the unit of measure "
 Demo_r\_pjanaggr3 contains population data on nuts3 level.
 The structure is similar to the previous dataset we presented and contains columns as the other file with the same names for value, region and year.
 This file also have multiple values with different groupings.
-We specify which choices we have made regarding which data is used:
+In the next section we specify which choices we have made regarding which data is used.
 
 There is a column named "age" for age groups.
 We have chosen the rows where the age is TOTAL.
@@ -130,7 +130,7 @@ We can use this data set to create plots with GDP and population value to presen
 
 ## Calculate GDP per capita
 
-To calculate GDP per capita we use the following formula: We multiply the GDP value with 1 million since it is in million euro and dividing by the population value.
+To calculate GDP per capita we use the following formula: multiplying the GDP value with 1 million since it is in million euro and dividing by the population value.
 Below we show how the formula for GDP per capita is used, and the results appear for each nuts3 region for the three countries in the group (Germany, Finland and Romania).
 
 ```{r}
@@ -172,11 +172,9 @@ slice_min(dedata, GDPpercapita, n=3)
 
 ```
 
-
 There is quite a difference in wealth between regions in Germany.
 The investigation shows that there is more than 10 times higher GDP per capita in the most wealthy regions compared to the least wealthy regions.
 Germany is the country with the highest GDP per capita in the given group of countries we investigated.
-
 
 ### GDP per capita for Finland:
 
@@ -207,11 +205,9 @@ slice_min(fidata, GDPpercapita, n=3)
 
 ```
 
-
 From the investigation it appears that the difference between the most and least wealthy regions in Finland are far smaller compared to what we saw in Germany.
 We can see that the most wealthy regions is not even twice the value as the least wealthy regions.
 The regional differences related to how wealthy the regions are, are not conspicuously large in Finland.
-
 
 ### GDP per capita for Romania:
 
@@ -249,7 +245,6 @@ We can now compare the wealth of the three countries Germany, Finland and Romani
 The clearest finding is that Finland differs from the other countries, in that there are smaller differences in GDP per region than what appears in the other two countries.
 We can also see clear differences between the countries when it comes to GDP per capita.
 Germany has a much higher GDP per capita compared to both Finland and Romania.
-
 
 ### GDP per capita plot
 
@@ -348,7 +343,6 @@ germany2019 <- germany %>%
 slice_max(germany2019,gini,n=3)
 ```
 
-
 These are the five most equal regions in Germany:
 
 ```{r}
@@ -392,13 +386,11 @@ finland2019 <- finland %>%
 slice_max(finland2019,gini,n=3)
 ```
 
-
 These are the five most equal regions in Finland:
 
 ```{r}
 slice_min(finland2019, gini, n=5)
 ```
-
 
 We can see that Finland also have two regions with a perfect score of 0.0.
 In this case we also suspect that there is a lack of data in the data set.
@@ -408,7 +400,6 @@ The following plot showing all regions in Finland also shows the two regions tha
 
 From the investigations we have carried out, it is clear that there are small differences in equality between regions in Finland.
 This also appears clearly in the plot presented below.
-
 
 ```{r}
   ggplot(finland, aes(x = Year, y=gini, fill=nuts2, color=nuts2)) +
@@ -510,4 +501,4 @@ romaniaoutliers
 
 We can see that there are outliers for both Germany and Finland.
 In Romania we have not uncovered any outliers.
-It is challenging to confirm which factors lead to the discovery of outliers in the data, but it is likely to think that insufficient information in the data set about the given time period (year) is important for otuliers to occur.
+It is challenging to confirm which factors lead to the discovery of outliers in the data, but it is likely to think that insufficient information in the data set about the given time period (year) is important for outliers to occur.
