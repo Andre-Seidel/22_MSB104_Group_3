@@ -370,7 +370,7 @@ For Germany we see there are some differences in equality between regions.
 ```{r}
   ggplot(germany, aes(x =Year, y=gini, fill=nuts2, color=nuts2)) +
   geom_point(lwd = .8) +
-   labs(x = "Year", y = "GDP")
+   labs(x = "Year", y = "Gini")
 ```
 
 #### GDP Ginie coefficients Finland
@@ -412,7 +412,7 @@ This also appears clearly in the plot presented below.
 ```{r}
   ggplot(finland, aes(x = Year, y=gini, fill=nuts2, color=nuts2)) +
   geom_point(lwd = .8) +
-   labs(x = "Year", y = "GDP")
+   labs(x = "Year", y = "Gini")
 ```
 
 #### GDP Ginie coefficients Romania
@@ -453,7 +453,7 @@ We investigate this further in the next section.
 ```{r}
   ggplot(romania, aes(x = Year, y=gini, fill=nuts2, color=nuts2)) +
   geom_point(lwd = .8) +
-   labs(x = "Year", y = "GDP")
+   labs(x = "Year", y = "Gini")
 ```
 
 ## Outliers in data set
