@@ -46,6 +46,7 @@ The packages is listed below :
                     library(dineq)
 
 ```{r}
+#| warning: false
 library(tidyverse)
 library(vtable)
 library(dineq)
@@ -82,6 +83,7 @@ The information that emerges from the data set deals with population data, which
 
 ```{r messages = FALSE}
 #| echo: false
+#| warning: false
 # read data from files
 gdpfile <- read_csv('NAMA_10R_3GDP.csv')
 populationfile <- read_csv('DEMO_R_PJANAGGR3.csv')
@@ -124,6 +126,7 @@ We are now left with a dataset where GDP and population values are combined.
 Below you can see what the combination looks like:
 
 ```{r}
+#| warning: false
 mydata
 
 mydata %>%
@@ -367,7 +370,7 @@ For Germany we see there are some differences in equality between regions.
 ```{r}
   ggplot(germany, aes(x =Year, y=gini, fill=nuts2, color=nuts2)) +
   geom_point(lwd = .8) +
-   labs(x = "Year", y = "GDP")
+   labs(x = "Year", y = "Gini")
 ```
 
 #### GDP Ginie coefficients Finland
@@ -409,7 +412,7 @@ This also appears clearly in the plot presented below.
 ```{r}
   ggplot(finland, aes(x = Year, y=gini, fill=nuts2, color=nuts2)) +
   geom_point(lwd = .8) +
-   labs(x = "Year", y = "GDP")
+   labs(x = "Year", y = "Gini")
 ```
 
 #### GDP Ginie coefficients Romania
@@ -450,7 +453,7 @@ We investigate this further in the next section.
 ```{r}
   ggplot(romania, aes(x = Year, y=gini, fill=nuts2, color=nuts2)) +
   geom_point(lwd = .8) +
-   labs(x = "Year", y = "GDP")
+   labs(x = "Year", y = "Gini")
 ```
 
 ## Outliers in data set
