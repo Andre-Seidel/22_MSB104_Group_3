@@ -181,7 +181,9 @@ slice_min(dedata, GDPpercapita, n=3)
 ```
 
 There is quite a difference in wealth between regions in Germany.
+From the table it appears that it is the regions Wolfsburg, Ingolstadt and München who are the wealthiest regions in Germany.
 The investigation shows that there is more than 10 times higher GDP per capita in the most wealthy regions compared to the least wealthy regions.
+Südwestpfalz, Kusel and Rhein-Pfalz-Kreis are the least wealthy regions in the country.
 Germany is the country with the highest GDP per capita in the given group of countries we investigated.
 
 ### GDP per capita for Finland:
@@ -214,7 +216,8 @@ slice_min(fidata, GDPpercapita, n=3)
 ```
 
 From the investigation it appears that the difference between the most and least wealthy regions in Finland are far smaller compared to what we saw in Germany.
-We can see that the most wealthy regions is not even twice the value as the least wealthy regions.
+Helsinki-Uusimaa, Åland and Ostrobothnia is the most wealthy regions in Finland.
+Compared to the least wealthy regions Etelä-Savo, Päijät-Häme and Kainuu we can see that the most wealthy regions is not even twice the value as the least wealthy regions.
 The regional differences related to how wealthy the regions are, are not conspicuously large in Finland.
 
 ### GDP per capita for Romania:
@@ -247,7 +250,9 @@ slice_min(rodata, GDPpercapita, n=3)
 ```
 
 For Romania there is a big difference between the most and least wealthiest regions.
-We also see that the most wealthy region has double the GDP per capita as the second most wealthy.
+Bucharest, Cluj Country and Timis Country is the most wealthy regions in Romaina.
+The least wealthy regions in the country is Vaslui Country, Giurgiu Country and Botosani Country.
+In Romania it becomes clear that the most wealthy region has double the GDP per capita as the second most wealthy.
 
 We can now compare the wealth of the three countries Germany, Finland and Romania using the investigations shown above.
 The clearest finding is that Finland differs from the other countries, in that there are smaller differences in GDP per region than what appears in the other two countries.
@@ -510,3 +515,8 @@ romaniaoutliers
 We can see that there are outliers for both Germany and Finland.
 In Romania we have not uncovered any outliers.
 It is challenging to confirm which factors lead to the discovery of outliers in the data, but it is likely to think that insufficient information in the data set about the given time period (year) is important for outliers to occur.
+
+## References
+
+::: {#refs}
+:::
