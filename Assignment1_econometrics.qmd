@@ -87,6 +87,23 @@ The information that emerges from the data set deals with population data, which
 # read data from files
 gdpfile <- read_csv('NAMA_10R_3GDP.csv')
 populationfile <- read_csv('DEMO_R_PJANAGGR3.csv')
+lifexp <- read_csv('DEMO_R_MLIFEXP.csv') %>%
+  select(unit,geo,age,sex,TIME_PERIOD,OBS_VALUE) %>%
+  filter(unit=="YR" & age=="Y_LT1" & sex=="T" & (grepl('DE..', geo) | grepl('FI..', geo) | grepl('RO..', geo))) %>%
+  mutate(lifeexpectancyage = OBS_VALUE, Year=TIME_PERIOD, nuts2=geo) %>%
+  select(nuts2,Year,lifeexpectancyage)
+
+education <- read_csv('EDAT_LFSE_04.csv') %>%
+  select(unit,isced11,geo,age,sex,TIME_PERIOD,OBS_VALUE) %>%
+  filter(unit=="PC" & isced11=="ED5-8" & age=="Y25-64" & sex=="T" & (grepl('DE..', geo) | grepl('FI..', geo) | grepl('RO..', geo))) %>%
+  mutate(eduval = OBS_VALUE, Year=TIME_PERIOD, nuts2=geo) %>%
+  select(nuts2,Year,eduval)
+
+transport <- read_csv('TRAN_R_NET.csv') %>%
+  select(unit,tra_infr,geo,TIME_PERIOD,OBS_VALUE) %>%
+  filter(unit=="KM_TKM2" & tra_infr=="MWAY" & (grepl('DE..', geo) | grepl('FI..', geo) | grepl('RO..', geo))) %>%
+  mutate(motorway = OBS_VALUE, Year=TIME_PERIOD, nuts2=geo) %>%
+  select(nuts2,Year,motorway)
 
 gdpdata <- gdpfile %>%
   rename(Year = TIME_PERIOD, GDP = OBS_VALUE, Region=geo)
@@ -113,6 +130,7 @@ mydata <- mydata %>%
    # only rows with TOTAL and T from the population data
   filter(age=='TOTAL' & sex=='T') %>%
   select(Year, Region, GDP,Population)
+
 ```
 
 As mentioned above, the two data sets consist of different values.
@@ -510,3 +528,41 @@ romaniaoutliers
 We can see that there are outliers for both Germany and Finland.
 In Romania we have not uncovered any outliers.
 It is challenging to confirm which factors lead to the discovery of outliers in the data, but it is likely to think that insufficient information in the data set about the given time period (year) is important for outliers to occur.
+
+## Assignment 2
+
+### Estimate the effete of regional development  on regional inequality  for the year 2010
+
+```{r}
+germany %>%
+  filter(Year==2010) %>%
+ggplot(aes(x =nuts2, y=gini, fill=nuts2, color=nuts2)) +
+  geom_point(lwd = .8) +
+   labs(x = "nuts2", y = "Gini")
+```
+
+```{r}
+data <- ginidata %>%
+  left_join(education, by = c("Year", "nuts2"))
+
+data <- data %>%
+  left_join(transport, by = c("Year", "nuts2")) 
+  
+data <- data %>%
+  left_join(lifexp, by = c("Year", "nuts2"))
+
+
+data <- data %>%
+  mutate(nuts0 = substr(nuts2,1,2))
+
+data %>%
+  filter(Year==2010 & nuts0=="DE") %>%
+ggplot(aes(x =eduval, y=gini, fill=nuts2, color=nuts2)) +
+  geom_point(lwd = .8) +
+   labs(x = "Education", y = "Gini")
+
+data
+
+
+
+```
