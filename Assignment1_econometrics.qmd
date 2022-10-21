@@ -50,6 +50,7 @@ The packages is listed below :
 library(tidyverse)
 library(vtable)
 library(dineq)
+library(huxtable)
 ```
 
 The datafiles "Nama_10r_3gdp" and "Demo_r\_pjanaggr3" contains different data.
@@ -145,7 +146,7 @@ Below you can see what the combination looks like:
 
 ```{r}
 #| warning: false
-mydata
+#mydata
 
 mydata %>%
     vtable::st(.)
