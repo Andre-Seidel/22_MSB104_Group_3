@@ -50,6 +50,7 @@ The packages is listed below :
 library(tidyverse)
 library(vtable)
 library(dineq)
+library(huxtable)
 ```
 
 The datafiles "Nama_10r_3gdp" and "Demo_r\_pjanaggr3" contains different data.
@@ -87,6 +88,23 @@ The information that emerges from the data set deals with population data, which
 # read data from files
 gdpfile <- read_csv('NAMA_10R_3GDP.csv')
 populationfile <- read_csv('DEMO_R_PJANAGGR3.csv')
+lifexp <- read_csv('DEMO_R_MLIFEXP.csv') %>%
+  select(unit,geo,age,sex,TIME_PERIOD,OBS_VALUE) %>%
+  filter(unit=="YR" & age=="Y_LT1" & sex=="T" & (grepl('DE..', geo) | grepl('FI..', geo) | grepl('RO..', geo))) %>%
+  mutate(lifeexpectancyage = OBS_VALUE, Year=TIME_PERIOD, nuts2=geo) %>%
+  select(nuts2,Year,lifeexpectancyage)
+
+education <- read_csv('EDAT_LFSE_04.csv') %>%
+  select(unit,isced11,geo,age,sex,TIME_PERIOD,OBS_VALUE) %>%
+  filter(unit=="PC" & isced11=="ED5-8" & age=="Y25-64" & sex=="T" & (grepl('DE..', geo) | grepl('FI..', geo) | grepl('RO..', geo))) %>%
+  mutate(eduval = OBS_VALUE, Year=TIME_PERIOD, nuts2=geo) %>%
+  select(nuts2,Year,eduval)
+
+transport <- read_csv('TRAN_R_NET.csv') %>%
+  select(unit,tra_infr,geo,TIME_PERIOD,OBS_VALUE) %>%
+  filter(unit=="KM_TKM2" & tra_infr=="MWAY" & (grepl('DE..', geo) | grepl('FI..', geo) | grepl('RO..', geo))) %>%
+  mutate(motorway = OBS_VALUE, Year=TIME_PERIOD, nuts2=geo) %>%
+  select(nuts2,Year,motorway)
 
 gdpdata <- gdpfile %>%
   rename(Year = TIME_PERIOD, GDP = OBS_VALUE, Region=geo)
@@ -113,6 +131,7 @@ mydata <- mydata %>%
    # only rows with TOTAL and T from the population data
   filter(age=='TOTAL' & sex=='T') %>%
   select(Year, Region, GDP,Population)
+
 ```
 
 As mentioned above, the two data sets consist of different values.
@@ -127,7 +146,7 @@ Below you can see what the combination looks like:
 
 ```{r}
 #| warning: false
-mydata
+#mydata
 
 mydata %>%
     vtable::st(.)
@@ -536,6 +555,133 @@ romaniaoutliers
 We can see that there are outliers for both Germany and Finland.
 In Romania we have not uncovered any outliers.
 It is challenging to confirm which factors lead to the discovery of outliers in the data, but it is likely to think that insufficient information in the data set about the given time period (year) is important for outliers to occur.
+
+
+## Assignment 2
+
+### Growth and inequity
+#### Estimate the effete of regional development  on regional inequality  for the year 2010
+
+```{r}
+germany %>%
+  filter(Year==2010) %>%
+ggplot(aes(x =nuts2, y=gini, fill=nuts2, color=nuts2)) +
+  geom_point(lwd = .8) +
+   labs(x = "nuts2", y = "Gini")
+```
+
+
+### Other derterminants of inequality
+
+We have chosen the following variables to explore in relationship to regional inequality GINIW:
+
+Life expecancy age in age (demographics category)
+Amount of motorway in kilometers (transport infrastructure category)
+Amount of persons with higher education (education category)
+
+```{r}
+data <- ginidata %>%
+  left_join(education, by = c("Year", "nuts2"))
+
+data <- data %>%
+  left_join(transport, by = c("Year", "nuts2")) 
+  
+data <- data %>%
+  left_join(lifexp, by = c("Year", "nuts2"))
+
+data <- data %>%
+  mutate(nuts0 = substr(nuts2,1,2))
+
+data %>%
+  filter(Year==2010 & nuts0=="DE") %>%
+ggplot(aes(x =eduval, y=gini, fill=nuts2, color=nuts2)) +
+  geom_point(lwd = .8) +
+   labs(x = "Education", y = "Gini")
+
+
+```
+
+```{r}
+germany2010 <- data %>%
+    filter(Year==2010 & nuts0=="DE") 
+
+finland2010 <- data %>%
+    filter(Year==2010 & nuts0=="FI") 
+
+romania2010 <- data %>%
+    filter(Year==2010 & nuts0=="RO") 
+
+
+multi_linear_regression_model_1 <- function(mlrdata){
+lm.4 = lm(gini ~ eduval , mlrdata) 
+lm.5 = lm(gini ~  motorway, mlrdata)
+lm.6 = lm(gini ~ eduval + motorway, mlrdata)
+#Gen Table
+  huxreg(
+  list("Model 1" = lm.4, "Model 2" = lm.5, "Model 3" = lm.6),
+  statistics = c(N = "nobs", R2 = "r.squared"),
+  coefs = c(education = "eduval","motorway", const. = "(Intercept)"),
+  note = "Note: {stars} T statistics in brackets."
+  )
+}
+
+multi_linear_regression_model_2 <- function(mlrdata){
+lm.4 = lm(gini ~ eduval , mlrdata) 
+lm.5 = lm(gini ~  lifeexpectancyage, mlrdata)
+lm.6 = lm(gini ~ eduval + lifeexpectancyage, mlrdata)
+#Gen Table
+  huxreg(
+  list("Model 1" = lm.4, "Model 2" = lm.5, "Model 3" = lm.6),
+  statistics = c(N = "nobs", R2 = "r.squared"),
+  coefs = c(education = "eduval","lifeexpectancyage", const. = "(Intercept)"),
+  note = "Note: {stars} T statistics in brackets."
+  )
+}
+```
+
+####Estimate multiple linear regression model for our chosen variables against gini
+
+#### Germany
+
+Estimate multiple linear regression model for germany on the effect education and motorway has on gini
+
+```{r}
+multi_linear_regression_model_1(germany2010)
+```
+
+Estimate multiple linear regression model for germany on the effect education and life expectancy age has on gini
+
+```{r}
+multi_linear_regression_model_2(germany2010)
+```
+
+#### Finland
+
+Estimate multiple linear regression model for Finland on the effect education and motorway has on gini
+
+```{r}
+multi_linear_regression_model_1(finland2010)
+```
+
+Estimate multiple linear regression model for Finland on the effect education and life expectancy age has on gini
+
+```{r}
+multi_linear_regression_model_2(finland2010)
+```
+
+#### Romania
+
+Estimate multiple linear regression model for Romania on the effect education and motorway has on gini
+
+```{r}
+multi_linear_regression_model_1(romania2010)
+```
+
+Estimate multiple linear regression model for Romania on the effect education and life expectancy age has on gini
+
+```{r}
+multi_linear_regression_model_2(romania2010)
+```
 
 ## References
 
