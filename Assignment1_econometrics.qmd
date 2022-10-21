@@ -472,7 +472,6 @@ slice_min(romania2019, gini, n=3)
 
 The max value for Ginie in this country in 2019 is only 0.326.
 The differences are not that big in Romania, but a gap still appears between the most and least equal regions in the country.
-
 We can see that no zero values appear in this table.
 This indicates that there are no outliers in the data set.
 We investigate this further in the next section.
