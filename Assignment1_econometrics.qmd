@@ -569,6 +569,12 @@ ggplot(aes(x =nuts2, y=gini, fill=nuts2, color=nuts2)) +
    labs(x = "nuts2", y = "Gini")
 ```
 
+We have chosen the following variables to explore in relationship to regional inequality GINIW:
+
+Life expecancy age in age (demographics category)
+Amount of motorway in kilometers (transport infrastructure category)
+Amount of persons with higher education (education category)
+
 ```{r}
 data <- ginidata %>%
   left_join(education, by = c("Year", "nuts2"))
