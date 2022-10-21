@@ -595,7 +595,7 @@ ggplot(aes(x =eduval, y=gini, fill=nuts2, color=nuts2)) +
   geom_point(lwd = .8) +
    labs(x = "Education", y = "Gini")
 
-data
+
 
 mdata <- data %>%
     filter(Year==2010 & nuts0=="RO") 
