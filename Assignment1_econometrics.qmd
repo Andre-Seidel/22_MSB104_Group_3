@@ -181,9 +181,9 @@ slice_min(dedata, GDPpercapita, n=3)
 ```
 
 There is quite a difference in wealth between regions in Germany.
-From the table it appears that it is the regions Wolfsburg, Ingolstadt and München who are the wealthiest regions in Germany.
+From the table it appears that it is the regions Wolfsburg (DE913) , Ingolstadt (DE211) and München (DE21H) who are the wealthiest regions in Germany.
 The investigation shows that there is more than 10 times higher GDP per capita in the most wealthy regions compared to the least wealthy regions.
-Südwestpfalz, Kusel and Rhein-Pfalz-Kreis are the least wealthy regions in the country.
+Südwestpfalz (DEB3K), Kusel (DEB3G) and Rhein-Pfalz-Kreis (DEB3I) are the least wealthy regions in the country.
 Germany is the country with the highest GDP per capita in the given group of countries we investigated.
 
 ### GDP per capita for Finland:
@@ -216,8 +216,8 @@ slice_min(fidata, GDPpercapita, n=3)
 ```
 
 From the investigation it appears that the difference between the most and least wealthy regions in Finland are far smaller compared to what we saw in Germany.
-Helsinki-Uusimaa, Åland and Ostrobothnia is the most wealthy regions in Finland.
-Compared to the least wealthy regions Etelä-Savo, Päijät-Häme and Kainuu we can see that the most wealthy regions is not even twice the value as the least wealthy regions.
+Helsinki-Uusimaa (FI1B1), Åland (FI200) and Ostrobothnia (FI195) is the most wealthy regions in Finland.
+Compared to the least wealthy regions Etelä-Savo (FI1D1), Päijät-Häme (FI1C3) and Kainuu (FI1D8) we can see that the most wealthy regions is not even twice the value as the least wealthy regions.
 The regional differences related to how wealthy the regions are, are not conspicuously large in Finland.
 
 ### GDP per capita for Romania:
@@ -250,8 +250,8 @@ slice_min(rodata, GDPpercapita, n=3)
 ```
 
 For Romania there is a big difference between the most and least wealthiest regions.
-Bucharest, Cluj Country and Timis Country is the most wealthy regions in Romaina.
-The least wealthy regions in the country is Vaslui Country, Giurgiu Country and Botosani Country.
+Bucharest (RO321), Cluj Country (RO113) and Timis Country (RO424) is the most wealthy regions in Romaina.
+The least wealthy regions in the country is Vaslui Country (RO216), Giurgiu Country (RO314) and Botosani Country (RO212).
 In Romania it becomes clear that the most wealthy region has double the GDP per capita as the second most wealthy.
 
 We can now compare the wealth of the three countries Germany, Finland and Romania using the investigations shown above.
@@ -288,6 +288,11 @@ It is far easier to show a realistic representation of GDP in the countries by p
 here you can clearly see the differences between the countries when factors with an influence on the plot, such as population, are included.
 
 ## Calculate GDP Ginie coefficients for nuts2 level
+
+The Ginie coefficient is a measure of statistical dispersion intended to represent the inequality in GDP within a nation.
+The coefficient measures the inequality among values of the GDP-level.
+The Gini coefficient varies between values from 0 to 1.
+A Gini coefficient of 0 expresses perfect equality, where all the values are equal, while a Gini coefficient of 1 expresses maximal inequality among the measured values.
 
 To calculate GDP Ginie coefficients for nuts2 level, we need to get the GDP data for our three countries on a nuts3 level first.
 We filter lines by using grepl and create a nuts2 level string using str_sub.
@@ -333,7 +338,10 @@ ginidata %>%
 ### Distribution of GDP Ginie coefficients
 
 By filtering the data shown in the table above, we can present a more clear presentation of the data for each of the three countries included.
-We filter the data for each of the countries in our group, and present the results below:
+In order to present representative data for the Ginie coefficient, we filter the data for each of the countries in our group to only apply for the year 2019.
+
+The following subsections present the Ginie coefficient for Nuts 2 level.
+The results is presented below:
 
 #### GDP Ginie coefficients Germany
 
@@ -347,6 +355,8 @@ germany %>%
 
 The three most unequal regions in Germany are:
 
+Oberbayern (DE21), Mittelfranken (DE25) and Darmstadt (DE71).
+
 ```{r}
 germany2019 <- germany %>%
     filter(Year==2019) %>%
@@ -358,11 +368,13 @@ slice_max(germany2019,gini,n=3)
 
 These are the five most equal regions in Germany:
 
+Berlin (DE30), Hamburg (DE60), Chemnitz (DED4), Mecklenburg-Vorpommern (DE80) and Trier (DEB2).
+
 ```{r}
 slice_min(germany2019, gini, n=5)
 ```
 
-There are two regions with a perfect score of 0.0.
+Berlin and Hamburg are regions with a perfect score of 0.0.
 This may be an indicator of missing data in the data set for these regions in the selected time period.
 Also see below at point "Outliers in data set" where we search for zero values in all Ginie results to find potential outliers in the data set.
 
@@ -390,6 +402,8 @@ finland %>%
 
 The three most unequal regions in Finland are:
 
+South Finland (FI1C), North & East Finland (FI1D) and West-Finland (FI19).
+
 ```{r}
 finland2019 <- finland %>%
     filter(Year==2019) %>%
@@ -401,16 +415,21 @@ slice_max(finland2019,gini,n=3)
 
 These are the five most equal regions in Finland:
 
+Helsinki-Uusimaa (FI1B), Åland (FI20), West-Finland (FI19), North & East Finland (FI1D) and South Finland (FI1C).
+
 ```{r}
 slice_min(finland2019, gini, n=5)
 ```
 
-We can see that Finland also have two regions with a perfect score of 0.0.
+We can see from the investigations that there are several of the regions in Finland that repeat themselves as both the least and most equal regions.
+On Nuts 2 level, the country is divided into more general and larger areas than at Nuts 3 level.
+This will be a factor that is important for several regions appearing again in both tables.
+
+We can see that the regions Helsinki-Uusimaa and Åland have a perfect score of 0.0.
 In this case we also suspect that there is a lack of data in the data set.
-We investigate this further in then next chapter where we look for potential outliers in the dataset.
+We investigate this further in the next chapter where we look for potential outliers in the dataset.
 
 The following plot showing all regions in Finland also shows the two regions that have zero values that we need to check.
-
 From the investigations we have carried out, it is clear that there are small differences in equality between regions in Finland.
 This also appears clearly in the plot presented below.
 
@@ -432,6 +451,8 @@ romania %>%
 
 The three most unequal regions in Romania are:
 
+Nord-Vest (RO11), Sud-Est (RO22) and Sud-Muntenia (RO31).
+
 ```{r}
 romania2019 <- romania %>%
     filter(Year==2019) %>%
@@ -443,12 +464,13 @@ slice_max(romania2019,gini,n=3)
 
 These are the three most equal regions in Romania:
 
+Bucuresti-Ilfov (RO32), Sud-Vest Oltenia (RO41) and Centru (RO12).
+
 ```{r}
 slice_min(romania2019, gini, n=3)
 ```
 
-If we plot our results for Romania we do see that one region have a clear improvement from around 2007.
-However the max value for Ginie in this country is only 0.379.
+The max value for Ginie in this country in 2019 is only 0.326.
 The differences are not that big in Romania, but a gap still appears between the most and least equal regions in the country.
 
 We can see that no zero values appear in this table.
@@ -481,7 +503,7 @@ germanoutliers
 ```
 
 We can see from the plot that at least two of the regions in Germany seems to be missing date for several years.
-Both the graphical representation in the plot and the examination of data through coding support this theory.
+Both the graphical representation in the plot and the examination of data through coding shows Berlin (DE30) and Hamburg (DE60) with zero value, and supports the theory that the regions are potential outliers.
 
 #### Outliers Finland
 
@@ -496,8 +518,8 @@ finlandoutliers
 ```
 
 After using the same method as for Germany, we see that it results in two potential outliers for Finland.
-By studying the plot, it appears that FI20 in any case lacks data, and has a zero value for all years.
-Both FI1B and FI20 are potential candidates as outliers in the dataset for Finland.
+By studying the plot, it appears that Åland (FI20) in any case lacks data, and has a zero value for all years.
+Both Helsinki-Uusimaa (FI1B) and Åland (FI20) are potential candidates as outliers in the dataset for Finland.
 
 #### Outliers Romania
 
