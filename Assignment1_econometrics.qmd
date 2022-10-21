@@ -607,7 +607,7 @@ lm.6 = lm(gini ~ eduval + motorway, mdata)
   huxreg(
   list("Model 1" = lm.4, "Model 2" = lm.5, "Model 3" = lm.6),
   statistics = c(N = "nobs", R2 = "r.squared"),
-  coefs = c(educ. = "eduval","motorway", const. = "(Intercept)"),
+  coefs = c(education = "eduval","motorway", const. = "(Intercept)"),
   note = "Note: {stars} T statistics in brackets."
   )
 
@@ -620,7 +620,7 @@ lm.6 = lm(gini ~ eduval + lifeexpectancyage, mdata)
   huxreg(
   list("Model 1" = lm.4, "Model 2" = lm.5, "Model 3" = lm.6),
   statistics = c(N = "nobs", R2 = "r.squared"),
-  coefs = c(educ. = "eduval","lifeexpectancyage", const. = "(Intercept)"),
+  coefs = c(education = "eduval","lifeexpectancyage", const. = "(Intercept)"),
   note = "Note: {stars} T statistics in brackets."
   )
 
