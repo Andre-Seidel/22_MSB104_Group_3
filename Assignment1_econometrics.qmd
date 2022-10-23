@@ -558,7 +558,16 @@ It is challenging to confirm which factors lead to the discovery of outliers in 
 
 ## Assignment 2
 
+In Assignment 2 we will study growth and inequity in the three countries we looked at in Assignment 1: Germany, Finland and Romania.
+In addition to the datasets used in Assignment 1, we have to load the data sets "demo_r\_mlifexp", "edat_lfse_04", and "tran_r\_net" from Eurostat so that we are able to study the topics growth and inequity.
+
+Below we will present the procedure for processing data, in addition to show the procedure for how new data has been obtained.
+The results will be presented at the end of the assignment, along with a description and discussion of the included data.
+
 ### Growth and inequity
+
+When we study growth and inequality, it is central to look at the regional development in the countries being studied.
+Regional development describes the development within a region by looking at the development within various conditions, such as political, demographic, social and cultural conditions.
 
 #### Estimate the effect of regional development on regional inequality for the year 2010
 
