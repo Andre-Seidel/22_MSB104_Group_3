@@ -556,16 +556,15 @@ We can see that there are outliers for both Germany and Finland.
 In Romania we have not uncovered any outliers.
 It is challenging to confirm which factors lead to the discovery of outliers in the data, but it is likely to think that insufficient information in the data set about the given time period (year) is important for outliers to occur.
 
-
 ## Assignment 2
 
 ### Growth and inequity
 
-#### Estimate the effect of regional development  on regional inequality  for the year 2010
+#### Estimate the effect of regional development on regional inequality for the year 2010
 
 #### Discuss the goodness of fit of your estimated model.
 
-#### Plot the relationship between regional development  and regional inequality  and the fitted line corresponding to your estimate.
+#### Plot the relationship between regional development and regional inequality and the fitted line corresponding to your estimate.
 
 ```{r}
 data <- ginidata %>%
@@ -603,7 +602,6 @@ data %>%
   st(.)
 ```
 
-
 ```{r}
 
 germany2010 <- data %>%
@@ -629,15 +627,11 @@ germany2010 %>%
 
 ### Discus the classical assumptions OLS in light of your data and plots
 
-
 ### Other derterminants of inequality
 
 We have chosen the following variables to explore in relationship to regional inequality GINIW:
 
-Life expecancy age in age (demographics category)
-Amount of motorway in kilometers (transport infrastructure category)
-Amount of persons with higher education (education category)
-
+Life expecancy age in age (demographics category) Amount of motorway in kilometers (transport infrastructure category) Amount of persons with higher education (education category)
 
 ```{r}
 data %>%
@@ -687,7 +681,7 @@ lm.6 = lm(gini ~ eduval + lifeexpectancyage, mlrdata)
 }
 ```
 
-####Estimate multiple linear regression model for our chosen variables against gini
+#### Estimate multiple linear regression model for our chosen variables against gini
 
 #### Germany
 
