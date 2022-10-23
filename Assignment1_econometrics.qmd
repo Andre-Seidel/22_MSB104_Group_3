@@ -560,24 +560,12 @@ It is challenging to confirm which factors lead to the discovery of outliers in 
 ## Assignment 2
 
 ### Growth and inequity
-#### Estimate the effete of regional development  on regional inequality  for the year 2010
 
-```{r}
-germany %>%
-  filter(Year==2010) %>%
-ggplot(aes(x =nuts2, y=gini, fill=nuts2, color=nuts2)) +
-  geom_point(lwd = .8) +
-   labs(x = "nuts2", y = "Gini")
-```
+#### Estimate the effect of regional development  on regional inequality  for the year 2010
 
+#### Discuss the goodness of fit of your estimated model.
 
-### Other derterminants of inequality
-
-We have chosen the following variables to explore in relationship to regional inequality GINIW:
-
-Life expecancy age in age (demographics category)
-Amount of motorway in kilometers (transport infrastructure category)
-Amount of persons with higher education (education category)
+#### Plot the relationship between regional development  and regional inequality  and the fitted line corresponding to your estimate.
 
 ```{r}
 data <- ginidata %>%
@@ -589,9 +577,69 @@ data <- data %>%
 data <- data %>%
   left_join(lifexp, by = c("Year", "nuts2"))
 
+percapita2 <- gdpdata %>%
+  # select only columns we need
+  select(Year, Region, GDP, unit) %>%
+  # select rows with MIO_EUR and the regions we need
+  filter(unit =='MIO_EUR' & (grepl('DE..', Region) |     grepl('FI..', Region) | grepl('RO..', Region))) %>%
+  left_join(populationdata, by=c("Year","Region"),
+            suffix = c("","_population")) %>%
+   # only rows with TOTAL and T from the population data
+  filter(age=='TOTAL' & sex=='T') %>%
+  mutate(gdp_pc_nuts2 = 1000000 * GDP / Population) %>%
+  mutate(nuts2 = Region) %>%
+  select(Year, nuts2, gdp_pc_nuts2)
+
+# The level of economic development is measured by the #log of the real GDP p.c. in constant U.S. $ in
+#power-purchasing parities (PPP)
+data <- data %>%
+  left_join(percapita2, by = c("Year", "nuts2")) %>%
+  mutate(log_gdppc = log(gdp_pc_nuts2))
+
 data <- data %>%
   mutate(nuts0 = substr(nuts2,1,2))
 
+data %>%
+  st(.)
+```
+
+
+```{r}
+
+germany2010 <- data %>%
+  filter(Year==2010, nuts0=="DE") 
+
+lm_gdppc <- lm(gini ~ log_gdppc, data = germany2010)
+b1_gdppc <- lm_gdppc$coefficients[1]
+b2_gdppc <- lm_gdppc$coefficients[2]
+
+germany2010 %>%
+  ggplot(aes(x =log_gdppc, y=gini, fill=nuts2, color=nuts2, label=nuts2)) +
+  geom_point(lwd = .8) +
+   geom_text(hjust=-0.3, vjust=0, check_overlap = FALSE) +
+  geom_abline(intercept = b1_gdppc, slope = b2_gdppc, color="blue", size=0.8) + 
+   labs(x = "log(GDP per capita)", y = "Gini")
+```
+
+#### Plot the residuals against the predicted values of your model.
+
+```{r}
+#lm_gdppc$residuals
+```
+
+### Discus the classical assumptions OLS in light of your data and plots
+
+
+### Other derterminants of inequality
+
+We have chosen the following variables to explore in relationship to regional inequality GINIW:
+
+Life expecancy age in age (demographics category)
+Amount of motorway in kilometers (transport infrastructure category)
+Amount of persons with higher education (education category)
+
+
+```{r}
 data %>%
   filter(Year==2010 & nuts0=="DE") %>%
 ggplot(aes(x =eduval, y=gini, fill=nuts2, color=nuts2)) +
