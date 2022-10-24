@@ -576,15 +576,7 @@ Regional development describes the development within a region by looking at the
 #### Plot the relationship between regional development and regional inequality and the fitted line corresponding to your estimate.
 
 ```{r}
-data <- ginidata %>%
-  left_join(education, by = c("Year", "nuts2"))
-
-data <- data %>%
-  left_join(transport, by = c("Year", "nuts2")) 
-  
-data <- data %>%
-  left_join(lifexp, by = c("Year", "nuts2"))
-
+# re-generate gdp per capita on a nuts2 level
 percapita2 <- gdpdata %>%
   # select only columns we need
   select(Year, Region, GDP, unit) %>%
@@ -598,34 +590,52 @@ percapita2 <- gdpdata %>%
   mutate(nuts2 = Region) %>%
   select(Year, nuts2, gdp_pc_nuts2)
 
-# The level of economic development is measured by the #log of the real GDP p.c. in constant U.S. $ in
-#power-purchasing parities (PPP)
-data <- data %>%
+# join in our data with new variables
+data2010 <- ginidata %>%
+  left_join(education, by = c("Year", "nuts2")) %>%
+  left_join(transport, by = c("Year", "nuts2")) %>%
+  left_join(lifexp, by = c("Year", "nuts2")) %>%
   left_join(percapita2, by = c("Year", "nuts2")) %>%
-  mutate(log_gdppc = log(gdp_pc_nuts2))
+  # level of economic development = log(gdp per capita)
+  mutate(log_gdppc = log(gdp_pc_nuts2)) %>%
+  # create column to easily filter by country
+  mutate(nuts0 = substr(nuts2,1,2)) %>%
+  filter(Year==2010)
 
-data <- data %>%
-  mutate(nuts0 = substr(nuts2,1,2))
-
-data %>%
+data2010 %>%
   st(.)
 ```
 
 ```{r}
+germany2010 <- data2010 %>%
+  filter(nuts0=="DE") 
+finland2010 <- data2010 %>%
+  filter(nuts0=="FI") 
+romania2010 <- data2010 %>%
+  filter(nuts0=="RO") 
 
-germany2010 <- data %>%
-  filter(Year==2010, nuts0=="DE") 
+lm_function <- function(lmdata){
+  lm_gdppc <- lm(gini ~ log_gdppc, data = lmdata)
+  b1_gdppc <- lm_gdppc$coefficients[1]
+  b2_gdppc <- lm_gdppc$coefficients[2]
 
-lm_gdppc <- lm(gini ~ log_gdppc, data = germany2010)
-b1_gdppc <- lm_gdppc$coefficients[1]
-b2_gdppc <- lm_gdppc$coefficients[2]
+  lmdata %>%
+    ggplot(aes(x =log_gdppc, y=gini, fill=nuts2, color=nuts2, label=nuts2)) +
+    geom_point(lwd = .8) +
+    geom_text(hjust=-0.3, vjust=0, check_overlap = FALSE) +
+    geom_abline(intercept = b1_gdppc, slope = b2_gdppc, color="blue", size=0.8) + 
+    labs(x = "log(GDP per capita)", y = "Gini")
+}
 
-germany2010 %>%
-  ggplot(aes(x =log_gdppc, y=gini, fill=nuts2, color=nuts2, label=nuts2)) +
-  geom_point(lwd = .8) +
-   geom_text(hjust=-0.3, vjust=0, check_overlap = FALSE) +
-  geom_abline(intercept = b1_gdppc, slope = b2_gdppc, color="blue", size=0.8) + 
-   labs(x = "log(GDP per capita)", y = "Gini")
+lm_function(germany2010)
+```
+
+```{r}
+lm_function(finland2010)
+```
+
+```{r}
+lm_function(romania2010)
 ```
 
 #### Plot the residuals against the predicted values of your model.
@@ -634,7 +644,7 @@ germany2010 %>%
 #lm_gdppc$residuals
 ```
 
-### Discus the classical assumptions OLS in light of your data and plots
+#### Discus the classical assumptions OLS in light of your data and plots
 
 ### Other derterminants of inequality
 
@@ -643,7 +653,7 @@ We have chosen the following variables to explore in relationship to regional in
 Life expecancy age in age (demographics category) Amount of motorway in kilometers (transport infrastructure category) Amount of persons with higher education (education category)
 
 ```{r}
-data %>%
+data2010 %>%
   filter(Year==2010 & nuts0=="DE") %>%
 ggplot(aes(x =eduval, y=gini, fill=nuts2, color=nuts2)) +
   geom_point(lwd = .8) +
@@ -653,15 +663,6 @@ ggplot(aes(x =eduval, y=gini, fill=nuts2, color=nuts2)) +
 ```
 
 ```{r}
-germany2010 <- data %>%
-    filter(Year==2010 & nuts0=="DE") 
-
-finland2010 <- data %>%
-    filter(Year==2010 & nuts0=="FI") 
-
-romania2010 <- data %>%
-    filter(Year==2010 & nuts0=="RO") 
-
 
 multi_linear_regression_model_1 <- function(mlrdata){
 lm.4 = lm(gini ~ eduval , mlrdata) 
