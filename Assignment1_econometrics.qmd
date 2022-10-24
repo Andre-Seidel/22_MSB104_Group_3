@@ -569,11 +569,8 @@ The results will be presented at the end of the assignment, along with a descrip
 When we study growth and inequality, it is central to look at the regional development in the countries being studied.
 Regional development describes the development within a region by looking at the development within various conditions, such as political, demographic, social and cultural conditions.
 
-#### Estimate the effect of regional development on regional inequality for the year 2010
+-- describe how regional development is calculated/presented by log(gdp per capita) ---
 
-#### Discuss the goodness of fit of your estimated model.
-
-#### Plot the relationship between regional development and regional inequality and the fitted line corresponding to your estimate.
 
 ```{r}
 # re-generate gdp per capita on a nuts2 level
@@ -606,7 +603,12 @@ data2010 %>%
   st(.)
 ```
 
+We can see that there are some values for Gini that is 0. We choose to filter them out as they probably are caused by missing data.
+
 ```{r}
+data2010 <- data2010 %>%
+  filter(gini > 0)
+
 germany2010 <- data2010 %>%
   filter(nuts0=="DE") 
 finland2010 <- data2010 %>%
@@ -615,7 +617,7 @@ romania2010 <- data2010 %>%
   filter(nuts0=="RO") 
 
 # create function to calculate linear regression model
-lm_function <- function(lmdata){
+lm_function_plot <- function(lmdata){
   lm_gdppc <- lm(gini ~ log_gdppc, data = lmdata)
   b1_gdppc <- lm_gdppc$coefficients[1]
   b2_gdppc <- lm_gdppc$coefficients[2]
@@ -629,15 +631,43 @@ lm_function <- function(lmdata){
     labs(x = "log(GDP per capita)", y = "Gini")
 }
 
-lm_function(germany2010)
+```
+
+#### Effect of regional development on regional inequality
+
+By using data for the year 2010 on our selected countries, we estimate the effect of regional development on regional inequality by using the simple regression model.
+
+```{r}
+lm.1 = lm(gini ~ log_gdppc, data = germany2010)
+lm.2 = lm(gini ~ log_gdppc, data = finland2010)
+lm.3 = lm(gini ~ log_gdppc, data = romania2010)
+lm.4 = lm(gini ~ log_gdppc, data = data2010)
+
+#Gen Table
+  huxreg(
+  list("Germany" = lm.1, "Finland" = lm.2, "Romania" = lm.3, "Total" = lm.4),
+  statistics = c(N = "nobs", R2 = "r.squared"),
+  coefs = c(log_gdppc = "log_gdppc", const. = "(Intercept)"),
+  note = "Note: {stars} T statistics in brackets."
+  )
+```
+
+
+#### Goodness of fit
+
+Coefficient of determination R2 is very high for Finland. However Finland has very few data points available for 2010 with only 3 values. If we combine the data from all three countries R2 becomes almost zero and there seems to be no good fit for our estimate. For germany we get R2 = 0.376 and Romania is close with R2 = 0.361. If we assume that a randomized control trial usually will give R2 < 0.1 at our estimate is a lot better than that.
+
+Here are the estimates plotted for each country
+```{r}
+lm_function_plot(germany2010)
 ```
 
 ```{r}
-lm_function(finland2010)
+lm_function_plot(finland2010)
 ```
 
 ```{r}
-lm_function(romania2010)
+lm_function_plot(romania2010)
 ```
 
 #### Plot the residuals against the predicted values of your model.
@@ -709,6 +739,11 @@ Estimate multiple linear regression model for Romania on the effect the new vari
 multi_linear_regression_model_1(romania2010)
 ```
 
+Estimate a multiple linear regression model with you new variables for 2010 and give a small interpretation of your findings.
+
+Discuss the overall fit of your model
+
+Discuss the inference related to your findings
 
 ## References
 
