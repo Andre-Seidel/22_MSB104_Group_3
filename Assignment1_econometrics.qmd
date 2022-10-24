@@ -578,10 +578,10 @@ Regional development describes the development within a region by looking at the
 ```{r}
 # re-generate gdp per capita on a nuts2 level
 percapita2 <- gdpdata %>%
+  # select rows with MIO_EUR and the regions we need
+  filter(Year=="2010" & unit =='MIO_EUR' & (grepl('DE..', Region) |     grepl('FI..', Region) | grepl('RO..', Region))) %>%
   # select only columns we need
   select(Year, Region, GDP, unit) %>%
-  # select rows with MIO_EUR and the regions we need
-  filter(unit =='MIO_EUR' & (grepl('DE..', Region) |     grepl('FI..', Region) | grepl('RO..', Region))) %>%
   left_join(populationdata, by=c("Year","Region"),
             suffix = c("","_population")) %>%
    # only rows with TOTAL and T from the population data
