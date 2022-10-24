@@ -707,7 +707,10 @@ lm_residuals_plot(romania2010)
 
 We have chosen the following variables to explore in relationship to regional inequality GINIW:
 
-Life expecancy age in age (demographics category) Amount of motorway in kilometers (transport infrastructure category) Amount of persons with higher education (education category)
+Life expectancy age in years (demographics category) Amount of motorway in kilometers per thousand square kilometers. (transport infrastructure category)
+Amount of persons with higher education in percent (education category)
+
+The reason for choosing these variables are that they could possibly be used indicate how well developed or wealthy the region is.  
 
 ```{r}
 data2010 %>%
