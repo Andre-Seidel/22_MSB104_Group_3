@@ -284,6 +284,8 @@ We present the results in a plot, where we collect GDP per capita for all three 
 This provides a clear presentation of the results, and simplifies the process of comparing the countries' level of GDP per capita.
 
 ```{r calculate-gdp-per-capita}
+#| label: fig-gdp-per-capita
+#| fig-cap: GDP per capita
 gdppercapita_total <- gdpdata %>%
   select(Year, Region, GDP, unit) %>%
   filter(unit =='MIO_EUR' & (Region %in% c("DE", "FI", "RO"))) %>%
@@ -655,6 +657,8 @@ lm_residuals_plot <- function(lmdata){
 By using data for the year 2010 on our selected countries, we estimate the effect of regional development on regional inequality by using the simple regression model.
 
 ```{r}
+#| label: tbl-log-gdppc
+#| tbl-cap: Estimate effect of regional development on regional inequality
 lm.1 = lm(gini ~ log_gdppc, data = germany2010)
 lm.2 = lm(gini ~ log_gdppc, data = finland2010)
 lm.3 = lm(gini ~ log_gdppc, data = romania2010)
@@ -676,6 +680,8 @@ Coefficient of determination R2 is very high for Finland. However Finland has ve
 
 Here are the estimates plotted for each country
 ```{r}
+#| label: fig-lm-germany
+#| fig-cap: Estimate for Germany
 lm_function_plot(germany2010)
 ```
 
