@@ -80,29 +80,30 @@ T refers to the total value for both males and females.
 The data set Demo_r\_pjanaggr3 does not take inflation into account.
 The information that emerges from the data set deals with population data, which is not directly covered by inflation.
 
-### Reading in data sets and renaming columns
 
 ```{r messages = FALSE}
 #| echo: false
 #| warning: false
-# read data from files
+
+# Reading in data sets and renaming columns
+
 gdpfile <- read_csv('NAMA_10R_3GDP.csv')
 populationfile <- read_csv('DEMO_R_PJANAGGR3.csv')
 lifexp <- read_csv('DEMO_R_MLIFEXP.csv') %>%
+  filter(TIME_PERIOD=="2010" & unit=="YR" & age=="Y_LT1" & sex=="T" & (grepl('DE..', geo) | grepl('FI..', geo) | grepl('RO..', geo))) %>%
   select(unit,geo,age,sex,TIME_PERIOD,OBS_VALUE) %>%
-  filter(unit=="YR" & age=="Y_LT1" & sex=="T" & (grepl('DE..', geo) | grepl('FI..', geo) | grepl('RO..', geo))) %>%
   mutate(lifeexpectancyage = OBS_VALUE, Year=TIME_PERIOD, nuts2=geo) %>%
   select(nuts2,Year,lifeexpectancyage)
 
 education <- read_csv('EDAT_LFSE_04.csv') %>%
+  filter(TIME_PERIOD=="2010" & unit=="PC" & isced11=="ED5-8" & age=="Y25-64" & sex=="T" & (grepl('DE..', geo) | grepl('FI..', geo) | grepl('RO..', geo))) %>%
   select(unit,isced11,geo,age,sex,TIME_PERIOD,OBS_VALUE) %>%
-  filter(unit=="PC" & isced11=="ED5-8" & age=="Y25-64" & sex=="T" & (grepl('DE..', geo) | grepl('FI..', geo) | grepl('RO..', geo))) %>%
   mutate(eduval = OBS_VALUE, Year=TIME_PERIOD, nuts2=geo) %>%
   select(nuts2,Year,eduval)
 
 transport <- read_csv('TRAN_R_NET.csv') %>%
+  filter(TIME_PERIOD=="2010" & unit=="KM_TKM2" & tra_infr=="MWAY" & (grepl('DE..', geo) | grepl('FI..', geo) | grepl('RO..', geo))) %>%
   select(unit,tra_infr,geo,TIME_PERIOD,OBS_VALUE) %>%
-  filter(unit=="KM_TKM2" & tra_infr=="MWAY" & (grepl('DE..', geo) | grepl('FI..', geo) | grepl('RO..', geo))) %>%
   mutate(motorway = OBS_VALUE, Year=TIME_PERIOD, nuts2=geo) %>%
   select(nuts2,Year,motorway)
 
@@ -114,9 +115,8 @@ populationdata <- populationfile %>%
   rename(Year = TIME_PERIOD, Population = OBS_VALUE, Region = geo)
 ```
 
-### Filter data and join the two datasets
-
 ```{r}
+# Filter data and join the two datasets
 
 mydata <- gdpdata %>%
   # select only columns we need
@@ -283,7 +283,7 @@ Germany has a much higher GDP per capita compared to both Finland and Romania.
 We present the results in a plot, where we collect GDP per capita for all three countries in the same presentation.
 This provides a clear presentation of the results, and simplifies the process of comparing the countries' level of GDP per capita.
 
-```{r}
+```{r calculate-gdp-per-capita}
 gdppercapita_total <- gdpdata %>%
   select(Year, Region, GDP, unit) %>%
   filter(unit =='MIO_EUR' & (Region %in% c("DE", "FI", "RO"))) %>%
@@ -569,27 +569,16 @@ The results will be presented at the end of the assignment, along with a descrip
 When we study growth and inequality, it is central to look at the regional development in the countries being studied.
 Regional development describes the development within a region by looking at the development within various conditions, such as political, demographic, social and cultural conditions.
 
-#### Estimate the effect of regional development on regional inequality for the year 2010
+-- describe how regional development is calculated/presented by log(gdp per capita) ---
 
-#### Discuss the goodness of fit of your estimated model.
-
-#### Plot the relationship between regional development and regional inequality and the fitted line corresponding to your estimate.
 
 ```{r}
-data <- ginidata %>%
-  left_join(education, by = c("Year", "nuts2"))
-
-data <- data %>%
-  left_join(transport, by = c("Year", "nuts2")) 
-  
-data <- data %>%
-  left_join(lifexp, by = c("Year", "nuts2"))
-
+# re-generate gdp per capita on a nuts2 level
 percapita2 <- gdpdata %>%
+  # select rows with MIO_EUR and the regions we need
+  filter(Year=="2010" & unit =='MIO_EUR' & (grepl('DE..', Region) |     grepl('FI..', Region) | grepl('RO..', Region))) %>%
   # select only columns we need
   select(Year, Region, GDP, unit) %>%
-  # select rows with MIO_EUR and the regions we need
-  filter(unit =='MIO_EUR' & (grepl('DE..', Region) |     grepl('FI..', Region) | grepl('RO..', Region))) %>%
   left_join(populationdata, by=c("Year","Region"),
             suffix = c("","_population")) %>%
    # only rows with TOTAL and T from the population data
@@ -598,141 +587,191 @@ percapita2 <- gdpdata %>%
   mutate(nuts2 = Region) %>%
   select(Year, nuts2, gdp_pc_nuts2)
 
-# The level of economic development is measured by the #log of the real GDP p.c. in constant U.S. $ in
-#power-purchasing parities (PPP)
-data <- data %>%
+# join in our data with new variables
+data2010 <- ginidata %>%
+  left_join(education, by = c("Year", "nuts2")) %>%
+  left_join(transport, by = c("Year", "nuts2")) %>%
+  left_join(lifexp, by = c("Year", "nuts2")) %>%
   left_join(percapita2, by = c("Year", "nuts2")) %>%
-  mutate(log_gdppc = log(gdp_pc_nuts2))
+  # level of economic development = log(gdp per capita)
+  mutate(log_gdppc = log(gdp_pc_nuts2)) %>%
+  # create column to easily filter by country
+  mutate(nuts0 = substr(nuts2,1,2)) %>%
+  filter(Year==2010)
 
-data <- data %>%
-  mutate(nuts0 = substr(nuts2,1,2))
-
-data %>%
+data2010 %>%
   st(.)
 ```
 
+We can see that there are some values for Gini that is 0. We choose to filter them out as they probably are caused by missing data.
+
 ```{r}
+data2010 <- data2010 %>%
+  filter(gini > 0)
 
-germany2010 <- data %>%
-  filter(Year==2010, nuts0=="DE") 
+germany2010 <- data2010 %>%
+  filter(nuts0=="DE") 
+finland2010 <- data2010 %>%
+  filter(nuts0=="FI") 
+romania2010 <- data2010 %>%
+  filter(nuts0=="RO") 
 
-lm_gdppc <- lm(gini ~ log_gdppc, data = germany2010)
-b1_gdppc <- lm_gdppc$coefficients[1]
-b2_gdppc <- lm_gdppc$coefficients[2]
+# create function to calculate linear regression model
+lm_function_plot <- function(lmdata){
+  lm_gdppc <- lm(gini ~ log_gdppc, data = lmdata)
+  b1_gdppc <- lm_gdppc$coefficients[1]
+  b2_gdppc <- lm_gdppc$coefficients[2]
 
-germany2010 %>%
-  ggplot(aes(x =log_gdppc, y=gini, fill=nuts2, color=nuts2, label=nuts2)) +
-  geom_point(lwd = .8) +
-   geom_text(hjust=-0.3, vjust=0, check_overlap = FALSE) +
-  geom_abline(intercept = b1_gdppc, slope = b2_gdppc, color="blue", size=0.8) + 
-   labs(x = "log(GDP per capita)", y = "Gini")
+  # create plot for l.reg. model
+  lmdata %>%
+    ggplot(aes(x =log_gdppc, y=gini, fill=nuts2, color=nuts2, label=nuts2)) +
+    geom_point(lwd = .8) +
+    geom_text(hjust=-0.3, vjust=0, check_overlap = FALSE) +
+    geom_abline(intercept = b1_gdppc, slope = b2_gdppc, color="blue", size=0.8) + 
+    labs(x = "log(GDP per capita)", y = "Gini")
+}
+
+# create function to calculate linear regression model
+lm_residuals_plot <- function(lmdata){
+  lm_gdppc <- lm(gini ~ log_gdppc, data = lmdata)
+  b1_gdppc <- lm_gdppc$coefficients[1]
+  b2_gdppc <- lm_gdppc$coefficients[2]
+
+  lmdata$predicted <- predict(lm_gdppc)
+  lmdata$residuals <- residuals(lm_gdppc)
+  
+  # create plot for l.reg. model
+  lmdata %>%
+    ggplot(aes(x =log_gdppc, y=gini, fill=nuts2, color=nuts2)) +
+    geom_point(lwd = .8) +
+    geom_segment(aes(xend=log_gdppc,yend=predicted)) +
+    geom_abline(intercept = b1_gdppc, slope = b2_gdppc, color="blue", size=0.8) + 
+    labs(x = "log(GDP per capita)", y = "Gini")
+}
+```
+
+#### Effect of regional development on regional inequality
+
+By using data for the year 2010 on our selected countries, we estimate the effect of regional development on regional inequality by using the simple regression model.
+
+```{r}
+lm.1 = lm(gini ~ log_gdppc, data = germany2010)
+lm.2 = lm(gini ~ log_gdppc, data = finland2010)
+lm.3 = lm(gini ~ log_gdppc, data = romania2010)
+lm.4 = lm(gini ~ log_gdppc, data = data2010)
+
+#Gen Table
+  huxreg(
+  list("Germany" = lm.1, "Finland" = lm.2, "Romania" = lm.3, "Total" = lm.4),
+  statistics = c(N = "nobs", R2 = "r.squared"),
+  coefs = c(log_gdppc = "log_gdppc", const. = "(Intercept)"),
+  note = "Note: {stars} T statistics in brackets."
+  )
+```
+
+
+#### Goodness of fit
+
+Coefficient of determination R2 is very high for Finland. However Finland has very few data points available for 2010 with only 3 values. If we combine the data from all three countries R2 becomes almost zero and there seems to be no good fit for our estimate. For germany we get R2 = 0.376 and Romania is close with R2 = 0.361. If we assume that a randomized control trial usually will give R2 < 0.1 at our estimate is a lot better than that.
+
+Here are the estimates plotted for each country
+```{r}
+lm_function_plot(germany2010)
+```
+
+```{r}
+lm_function_plot(finland2010)
+```
+
+```{r}
+lm_function_plot(romania2010)
 ```
 
 #### Plot the residuals against the predicted values of your model.
 
 ```{r}
-#lm_gdppc$residuals
+lm_residuals_plot(germany2010)
 ```
 
-### Discus the classical assumptions OLS in light of your data and plots
+```{r}
+lm_residuals_plot(finland2010)
+```
+
+```{r}
+lm_residuals_plot(romania2010)
+```
+
+#### Discus the classical assumptions OLS in light of your data and plots
 
 ### Other derterminants of inequality
 
 We have chosen the following variables to explore in relationship to regional inequality GINIW:
 
-Life expecancy age in age (demographics category) Amount of motorway in kilometers (transport infrastructure category) Amount of persons with higher education (education category)
+Life expectancy age in years (demographics category) Amount of motorway in kilometers per thousand square kilometers. (transport infrastructure category)
+Amount of persons with higher education in percent (education category)
+
+The reason for choosing these variables are that they could possibly be used indicate how well developed or wealthy the region is.  
 
 ```{r}
-data %>%
+data2010 %>%
   filter(Year==2010 & nuts0=="DE") %>%
 ggplot(aes(x =eduval, y=gini, fill=nuts2, color=nuts2)) +
   geom_point(lwd = .8) +
    labs(x = "Education", y = "Gini")
 
-
 ```
 
 ```{r}
-germany2010 <- data %>%
-    filter(Year==2010 & nuts0=="DE") 
-
-finland2010 <- data %>%
-    filter(Year==2010 & nuts0=="FI") 
-
-romania2010 <- data %>%
-    filter(Year==2010 & nuts0=="RO") 
-
 
 multi_linear_regression_model_1 <- function(mlrdata){
-lm.4 = lm(gini ~ eduval , mlrdata) 
-lm.5 = lm(gini ~  motorway, mlrdata)
-lm.6 = lm(gini ~ eduval + motorway, mlrdata)
+lm.1 = lm(gini ~ eduval , mlrdata) 
+lm.2 = lm(gini ~  motorway, mlrdata)
+lm.3 = lm(gini ~ eduval + motorway, mlrdata)
+lm.4 = lm(gini ~  lifeexpectancyage, mlrdata)
+lm.5 = lm(gini ~ eduval + lifeexpectancyage, mlrdata)
 #Gen Table
   huxreg(
-  list("Model 1" = lm.4, "Model 2" = lm.5, "Model 3" = lm.6),
+  list("Model 1" = lm.1, "Model 2" = lm.2, "Model 3" = lm.3,"Model 4" = lm.4,"Model 5" = lm.5),
   statistics = c(N = "nobs", R2 = "r.squared"),
-  coefs = c(education = "eduval","motorway", const. = "(Intercept)"),
+  coefs = c(education = "eduval","motorway", life.exp. = "lifeexpectancyage", const. = "(Intercept)"),
   note = "Note: {stars} T statistics in brackets."
   )
 }
 
-multi_linear_regression_model_2 <- function(mlrdata){
-lm.4 = lm(gini ~ eduval , mlrdata) 
-lm.5 = lm(gini ~  lifeexpectancyage, mlrdata)
-lm.6 = lm(gini ~ eduval + lifeexpectancyage, mlrdata)
-#Gen Table
-  huxreg(
-  list("Model 1" = lm.4, "Model 2" = lm.5, "Model 3" = lm.6),
-  statistics = c(N = "nobs", R2 = "r.squared"),
-  coefs = c(education = "eduval","lifeexpectancyage", const. = "(Intercept)"),
-  note = "Note: {stars} T statistics in brackets."
-  )
-}
 ```
 
 #### Estimate multiple linear regression model for our chosen variables against gini
 
 #### Germany
 
-Estimate multiple linear regression model for germany on the effect education and motorway has on gini
+Estimate multiple linear regression model for germany on the effect the new variables have on gini
 
 ```{r}
 multi_linear_regression_model_1(germany2010)
 ```
 
-Estimate multiple linear regression model for germany on the effect education and life expectancy age has on gini
-
-```{r}
-multi_linear_regression_model_2(germany2010)
-```
 
 #### Finland
 
-Estimate multiple linear regression model for Finland on the effect education and motorway has on gini
+Estimate multiple linear regression model for Finland on the effect the new variables have on gini
 
 ```{r}
 multi_linear_regression_model_1(finland2010)
 ```
 
-Estimate multiple linear regression model for Finland on the effect education and life expectancy age has on gini
-
-```{r}
-multi_linear_regression_model_2(finland2010)
-```
-
 #### Romania
 
-Estimate multiple linear regression model for Romania on the effect education and motorway has on gini
+Estimate multiple linear regression model for Romania on the effect the new variables have on gini
 
 ```{r}
 multi_linear_regression_model_1(romania2010)
 ```
 
-Estimate multiple linear regression model for Romania on the effect education and life expectancy age has on gini
+Estimate a multiple linear regression model with you new variables for 2010 and give a small interpretation of your findings.
 
-```{r}
-multi_linear_regression_model_2(romania2010)
-```
+Discuss the overall fit of your model
+
+Discuss the inference related to your findings
 
 ## References
 
