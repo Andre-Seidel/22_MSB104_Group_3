@@ -89,20 +89,20 @@ The information that emerges from the data set deals with population data, which
 gdpfile <- read_csv('NAMA_10R_3GDP.csv')
 populationfile <- read_csv('DEMO_R_PJANAGGR3.csv')
 lifexp <- read_csv('DEMO_R_MLIFEXP.csv') %>%
+  filter(TIME_PERIOD=="2010" & unit=="YR" & age=="Y_LT1" & sex=="T" & (grepl('DE..', geo) | grepl('FI..', geo) | grepl('RO..', geo))) %>%
   select(unit,geo,age,sex,TIME_PERIOD,OBS_VALUE) %>%
-  filter(unit=="YR" & age=="Y_LT1" & sex=="T" & (grepl('DE..', geo) | grepl('FI..', geo) | grepl('RO..', geo))) %>%
   mutate(lifeexpectancyage = OBS_VALUE, Year=TIME_PERIOD, nuts2=geo) %>%
   select(nuts2,Year,lifeexpectancyage)
 
 education <- read_csv('EDAT_LFSE_04.csv') %>%
+  filter(TIME_PERIOD=="2010" & unit=="PC" & isced11=="ED5-8" & age=="Y25-64" & sex=="T" & (grepl('DE..', geo) | grepl('FI..', geo) | grepl('RO..', geo))) %>%
   select(unit,isced11,geo,age,sex,TIME_PERIOD,OBS_VALUE) %>%
-  filter(unit=="PC" & isced11=="ED5-8" & age=="Y25-64" & sex=="T" & (grepl('DE..', geo) | grepl('FI..', geo) | grepl('RO..', geo))) %>%
   mutate(eduval = OBS_VALUE, Year=TIME_PERIOD, nuts2=geo) %>%
   select(nuts2,Year,eduval)
 
 transport <- read_csv('TRAN_R_NET.csv') %>%
+  filter(TIME_PERIOD=="2010" & unit=="KM_TKM2" & tra_infr=="MWAY" & (grepl('DE..', geo) | grepl('FI..', geo) | grepl('RO..', geo))) %>%
   select(unit,tra_infr,geo,TIME_PERIOD,OBS_VALUE) %>%
-  filter(unit=="KM_TKM2" & tra_infr=="MWAY" & (grepl('DE..', geo) | grepl('FI..', geo) | grepl('RO..', geo))) %>%
   mutate(motorway = OBS_VALUE, Year=TIME_PERIOD, nuts2=geo) %>%
   select(nuts2,Year,motorway)
 
