@@ -659,81 +659,54 @@ ggplot(aes(x =eduval, y=gini, fill=nuts2, color=nuts2)) +
   geom_point(lwd = .8) +
    labs(x = "Education", y = "Gini")
 
-
 ```
 
 ```{r}
 
 multi_linear_regression_model_1 <- function(mlrdata){
-lm.4 = lm(gini ~ eduval , mlrdata) 
-lm.5 = lm(gini ~  motorway, mlrdata)
-lm.6 = lm(gini ~ eduval + motorway, mlrdata)
+lm.1 = lm(gini ~ eduval , mlrdata) 
+lm.2 = lm(gini ~  motorway, mlrdata)
+lm.3 = lm(gini ~ eduval + motorway, mlrdata)
+lm.4 = lm(gini ~  lifeexpectancyage, mlrdata)
+lm.5 = lm(gini ~ eduval + lifeexpectancyage, mlrdata)
 #Gen Table
   huxreg(
-  list("Model 1" = lm.4, "Model 2" = lm.5, "Model 3" = lm.6),
+  list("Model 1" = lm.1, "Model 2" = lm.2, "Model 3" = lm.3,"Model 4" = lm.4,"Model 5" = lm.5),
   statistics = c(N = "nobs", R2 = "r.squared"),
-  coefs = c(education = "eduval","motorway", const. = "(Intercept)"),
+  coefs = c(education = "eduval","motorway", life.exp. = "lifeexpectancyage", const. = "(Intercept)"),
   note = "Note: {stars} T statistics in brackets."
   )
 }
 
-multi_linear_regression_model_2 <- function(mlrdata){
-lm.4 = lm(gini ~ eduval , mlrdata) 
-lm.5 = lm(gini ~  lifeexpectancyage, mlrdata)
-lm.6 = lm(gini ~ eduval + lifeexpectancyage, mlrdata)
-#Gen Table
-  huxreg(
-  list("Model 1" = lm.4, "Model 2" = lm.5, "Model 3" = lm.6),
-  statistics = c(N = "nobs", R2 = "r.squared"),
-  coefs = c(education = "eduval","lifeexpectancyage", const. = "(Intercept)"),
-  note = "Note: {stars} T statistics in brackets."
-  )
-}
 ```
 
 #### Estimate multiple linear regression model for our chosen variables against gini
 
 #### Germany
 
-Estimate multiple linear regression model for germany on the effect education and motorway has on gini
+Estimate multiple linear regression model for germany on the effect the new variables have on gini
 
 ```{r}
 multi_linear_regression_model_1(germany2010)
 ```
 
-Estimate multiple linear regression model for germany on the effect education and life expectancy age has on gini
-
-```{r}
-multi_linear_regression_model_2(germany2010)
-```
 
 #### Finland
 
-Estimate multiple linear regression model for Finland on the effect education and motorway has on gini
+Estimate multiple linear regression model for Finland on the effect the new variables have on gini
 
 ```{r}
 multi_linear_regression_model_1(finland2010)
 ```
 
-Estimate multiple linear regression model for Finland on the effect education and life expectancy age has on gini
-
-```{r}
-multi_linear_regression_model_2(finland2010)
-```
-
 #### Romania
 
-Estimate multiple linear regression model for Romania on the effect education and motorway has on gini
+Estimate multiple linear regression model for Romania on the effect the new variables have on gini
 
 ```{r}
 multi_linear_regression_model_1(romania2010)
 ```
 
-Estimate multiple linear regression model for Romania on the effect education and life expectancy age has on gini
-
-```{r}
-multi_linear_regression_model_2(romania2010)
-```
 
 ## References
 
