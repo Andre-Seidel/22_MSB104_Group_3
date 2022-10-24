@@ -614,11 +614,13 @@ finland2010 <- data2010 %>%
 romania2010 <- data2010 %>%
   filter(nuts0=="RO") 
 
+# create function to calculate linear regression model
 lm_function <- function(lmdata){
   lm_gdppc <- lm(gini ~ log_gdppc, data = lmdata)
   b1_gdppc <- lm_gdppc$coefficients[1]
   b2_gdppc <- lm_gdppc$coefficients[2]
 
+  # create plot for l.reg. model
   lmdata %>%
     ggplot(aes(x =log_gdppc, y=gini, fill=nuts2, color=nuts2, label=nuts2)) +
     geom_point(lwd = .8) +
