@@ -80,7 +80,6 @@ T refers to the total value for both males and females.
 The data set Demo_r\_pjanaggr3 does not take inflation into account.
 The information that emerges from the data set deals with population data, which is not directly covered by inflation.
 
-
 ```{r messages = FALSE}
 #| echo: false
 #| warning: false
@@ -571,7 +570,6 @@ Regional development describes the development within a region by looking at the
 
 -- describe how regional development is calculated/presented by log(gdp per capita) ---
 
-
 ```{r}
 # re-generate gdp per capita on a nuts2 level
 percapita2 <- gdpdata %>%
@@ -603,7 +601,8 @@ data2010 %>%
   st(.)
 ```
 
-We can see that there are some values for Gini that is 0. We choose to filter them out as they probably are caused by missing data.
+We can see that there are some values for Gini that is 0.
+We choose to filter them out as they probably are caused by missing data.
 
 ```{r}
 data2010 <- data2010 %>%
@@ -669,12 +668,16 @@ lm.4 = lm(gini ~ log_gdppc, data = data2010)
   )
 ```
 
-
 #### Goodness of fit
 
-Coefficient of determination R2 is very high for Finland. However Finland has very few data points available for 2010 with only 3 values. If we combine the data from all three countries R2 becomes almost zero and there seems to be no good fit for our estimate. For germany we get R2 = 0.376 and Romania is close with R2 = 0.361. If we assume that a randomized control trial usually will give R2 < 0.1 at our estimate is a lot better than that.
+Coefficient of determination R2 is very high for Finland.
+However Finland has very few data points available for 2010 with only 3 values.
+If we combine the data from all three countries R2 becomes almost zero and there seems to be no good fit for our estimate.
+For germany we get R2 = 0.376 and Romania is close with R2 = 0.361.
+If we assume that a randomized control trial usually will give R2 \< 0.1 at our estimate is a lot better than that.
 
 Here are the estimates plotted for each country
+
 ```{r}
 lm_function_plot(germany2010)
 ```
@@ -707,10 +710,10 @@ lm_residuals_plot(romania2010)
 
 We have chosen the following variables to explore in relationship to regional inequality GINIW:
 
-Life expectancy age in years (demographics category) Amount of motorway in kilometers per thousand square kilometers. (transport infrastructure category)
-Amount of persons with higher education in percent (education category)
+Life expectancy age in years (demographics category) Amount of motorway in kilometers per thousand square kilometers.
+(transport infrastructure category) Amount of persons with higher education in percent (education category)
 
-The reason for choosing these variables are that they could possibly be used indicate how well developed or wealthy the region is.  
+The reason for choosing these variables are that they could possibly be used indicate how well developed or wealthy the region is.
 
 ```{r}
 data2010 %>%
@@ -749,7 +752,6 @@ Estimate multiple linear regression model for germany on the effect the new vari
 ```{r}
 multi_linear_regression_model_1(germany2010)
 ```
-
 
 #### Finland
 
