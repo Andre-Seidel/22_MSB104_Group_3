@@ -708,7 +708,10 @@ This emphasizes that there is a discrepancy between the model and the variables 
 ```{r}
 lm_function_plot(finland2010)
 ```
-In the plot for Finland we see that the points are placed close to the regression line. At first glance, it appears that the model has a strong goodness to fit. But due to very little data for the selected country to compare, it is difficult to describe the real relationship from the plot. 
+
+In the plot for Finland we see that the points are placed close to the regression line.
+At first glance, it appears that the model has a strong goodness to fit.
+But due to very little data for the selected country to compare, it is difficult to describe the real relationship from the plot.
 
 ```{r}
 lm_function_plot(romania2010)
