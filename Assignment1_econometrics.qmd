@@ -654,7 +654,9 @@ lm_residuals_plot <- function(lmdata){
 
 #### Effect of regional development on regional inequality
 
-To describe the effect of regional development on regional inequality, we will carry out a regression analysis.  Regression analysis is a statistical analysis method for describing the relationship between one or more independent variables and a dependent variable. Wee look at the data we have for the year 2010 on our selected countries, and estimate the effect of regional development on regional inequality using a simple regression model.
+To describe the effect of regional development on regional inequality, we will carry out a regression analysis.
+Regression analysis is a statistical analysis method for describing the relationship between one or more independent variables and a dependent variable.
+Wee look at the data we have for the year 2010 on our selected countries, and estimate the effect of regional development on regional inequality using a simple regression model.
 
 ```{r}
 lm.1 = lm(gini ~ log_gdppc, data = germany2010)
@@ -673,13 +675,25 @@ lm.4 = lm(gini ~ log_gdppc, data = data2010)
 
 #### Goodness of fit
 
-Coefficient of determination R2 is very high for Finland.
-However Finland has very few data points available for 2010 with only 3 values.
-If we combine the data from all three countries R2 becomes almost zero and there seems to be no good fit for our estimate.
-For germany we get R2 = 0.376 and Romania is close with R2 = 0.361.
-If we assume that a randomized control trial usually will give R2 \< 0.1 at our estimate is a lot better than that.
+After carrying out a simple regression analysis, we are left with descriptive data about how well adapted our model is to the variable being analysed.
+To assess the goodness of fit on our model, we have to look at the coefficient of determination R2.
+The coefficient of determination R2 describes the fit of a model in relation to the variable being analyzed.
+The coefficient lies within the values 0 to 1.
+A result of 0 or close to zero indicates that the model fits less to the variable being analyzed, hence the results become less reliable.
+If the coefficient is 1 or close to 1, it indicates that the model and the variable that has been analyzed are adjusted for each other and will give reliable results.
+In this case we can see that the Coefficient of determination R2 for Finland is very high (0,923).
+However, it is important to note that for Finland there are only three data point available for the year 2010.
+This will affect the result and could create an unrealistic high value for the coefficient R2 due to the low amount of data available.
 
-Here are the estimates plotted for each country
+Due to the uncertainty surrounding the reliability of the coefficient value for Finland, we choose to combine the data from all three countries and view the coefficients in context.
+If we combine the data from Finland, Germany an Romania, R2 becomes almost zero.
+A zero value for the coefficient indicates a low goodness of fit.
+There seems to be no good fit for our estimate.
+
+We see that Germany and Romania have relatively similar values of coefficient R2, respectively of 0.376 for Germany and 0.361 for Romania.
+If we assume that a randomized control trial usually will give R2 \< 0.1 will our estimate be far better than that and the goodness of fit for our model is reliable because the model and the variable are adapted to each other.
+
+Furthermore we will present the estimates plotted for each country.
 
 ```{r}
 lm_function_plot(germany2010)
