@@ -605,7 +605,7 @@ When looking at the table summarizing the statistics, it appears that there are 
 The Gini coefficient measures statistical dispersion and varies between values from 0 to 1.
 The Gini value equal to zero in the table expresses that there are only equal values and expresses perfect equality.
 It is likely to think that the zero value in the table may be due to missing data for the selected year under investigation.
-This leads us to choose to filter out Gini equal to zero.
+This leads us to choose to filter out Gini value equal to zero.
 
 ```{r}
 data2010 <- data2010 %>%
@@ -654,7 +654,7 @@ lm_residuals_plot <- function(lmdata){
 
 #### Effect of regional development on regional inequality
 
-By using data for the year 2010 on our selected countries, we estimate the effect of regional development on regional inequality by using the simple regression model.
+To describe the effect of regional development on regional inequality, we will carry out a regression analysis.  Regression analysis is a statistical analysis method for describing the relationship between one or more independent variables and a dependent variable. Wee look at the data we have for the year 2010 on our selected countries, and estimate the effect of regional development on regional inequality using a simple regression model.
 
 ```{r}
 lm.1 = lm(gini ~ log_gdppc, data = germany2010)
