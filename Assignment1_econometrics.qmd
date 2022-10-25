@@ -681,12 +681,12 @@ The coefficient of determination R2 describes the fit of a model in relation to 
 The coefficient lies within the values 0 to 1.
 A result of 0 or close to zero indicates that the model fits less to the variable being analyzed, hence the results become less reliable.
 If the coefficient is 1 or close to 1, it indicates that the model and the variable that has been analyzed are adjusted for each other and will give reliable results.
-In this case we can see that the Coefficient of determination R2 for Finland is very high (0,923).
+In this case we can see that the Coefficient of determination R2 for Finland is very high (0.923).
 However, it is important to note that for Finland there are only three data point available for the year 2010.
 This will affect the result and could create an unrealistic high value for the coefficient R2 due to the low amount of data available.
 
 Due to the uncertainty surrounding the reliability of the coefficient value for Finland, we choose to combine the data from all three countries and view the coefficients in context.
-If we combine the data from Finland, Germany an Romania, R2 becomes almost zero.
+If we combine the data from Finland, Germany an Romania, R2 becomes almost zero (R2 = 0.045).
 A zero value for the coefficient indicates a low goodness of fit.
 There seems to be no good fit for our estimate.
 
@@ -698,6 +698,12 @@ Furthermore we will present the estimates plotted for each country.
 ```{r}
 lm_function_plot(germany2010)
 ```
+
+From the plot, we see that there are a number of data points for Germany.
+This agrees with the number that appears as N = 33 in the regression analysis above.
+Germany had a coefficient of determination of 0.376.
+Based on the plot, we see that the data points are spread out from the line.
+This emphasizes that there is a discrepancy between the model and the variables that have been analyzed.
 
 ```{r}
 lm_function_plot(finland2010)
