@@ -705,13 +705,17 @@ Furthermore we will present the estimates plotted for each country.
 lm_function_plot(germany2010)
 ```
 
-From the plot, we see that there are a number of data points for Germany.
+
+
+From @fig-lm-germany, we see that there are a number of data points for Germany.
 This agrees with the number that appears as N = 33 in the regression analysis above.
 Germany had a coefficient of determination of 0.376.
 Based on the plot, we see that the data points are spread out from the line.
 This emphasizes that there is a discrepancy between the model and the variables that have been analyzed.
 
 ```{r}
+#| label: fig-estimate-finland
+#| fig-cap: Estimate for Finland
 lm_function_plot(finland2010)
 ```
 
@@ -720,24 +724,33 @@ At first glance, it appears that the model has a strong goodness to fit.
 But due to very little data for the selected country to compare, it is difficult to describe the real relationship from the plot.
 
 ```{r}
+#| label: fig-estimate-romania
+#| fig-cap: Estimate for Romania
 lm_function_plot(romania2010)
 ```
 
 #### Plot the residuals against the predicted values of your model.
 
 ```{r}
+#| label: fig-residuals-germany
+#| fig-cap: Residuals Germany
 lm_residuals_plot(germany2010)
 ```
 
 ```{r}
+#| label: fig-residuals-finland
+#| fig-cap: Residuals Germany
 lm_residuals_plot(finland2010)
 ```
 
 ```{r}
+#| label: fig-residuals-romania
+#| fig-cap: Residuals Germany
 lm_residuals_plot(romania2010)
 ```
 
 #### Discus the classical assumptions OLS in light of your data and plots
+
 
 ### Other derterminants of inequality
 
@@ -783,6 +796,8 @@ lm.5 = lm(gini ~ eduval + lifeexpectancyage, mlrdata)
 Estimate multiple linear regression model for germany on the effect the new variables have on gini
 
 ```{r}
+#| label: tbl-mlr-germany
+#| tbl-cap: Multi linear regression model Germany
 multi_linear_regression_model_1(germany2010)
 ```
 
@@ -791,6 +806,8 @@ multi_linear_regression_model_1(germany2010)
 Estimate multiple linear regression model for Finland on the effect the new variables have on gini
 
 ```{r}
+#| label: tbl-mlr-finland
+#| tbl-cap: Multi linear regression model Finland
 multi_linear_regression_model_1(finland2010)
 ```
 
@@ -799,6 +816,8 @@ multi_linear_regression_model_1(finland2010)
 Estimate multiple linear regression model for Romania on the effect the new variables have on gini
 
 ```{r}
+#| label: tbl-mlr-romania
+#| tbl-cap: Multi linear regression model Romania
 multi_linear_regression_model_1(romania2010)
 ```
 
