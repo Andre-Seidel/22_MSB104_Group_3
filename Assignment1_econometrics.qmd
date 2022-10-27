@@ -833,9 +833,82 @@ multi_linear_regression_model_1(romania2010)
 
 Romania also have very few regions with data for 2010 and R2 in @tbl-mlr-romania seems to be almost the same for any model in our estimate.
 
-#### Overall fit and inference
+#### Overall fit 
 
 Since both Finland and Romania have very little data for 2010 it may only be Germany we can use to a reasonable attempt to check for goodness of fit for our model estimate. Maybe there is a certain fit for education and motorway in combination having an effect on regional inequality for Germany. Both variables should have some connection with how well developed and wealthy a region is. This can maybe give similar results as our estimate for the effect regional development have on regional inequality.
+
+#### Inference
+
+-- theory for using hypothesis testing for inference --
+
+##### Education
+
+```{r}
+#| label: tbl-inference-education
+#| tbl-cap: Education linear model
+lm(gini ~ eduval , data=germany2010) %>% tidy()%>% kable(., digits=2)
+```
+
+H0: βEducation = 0  
+
+Ha: βEducation  ≠ 0 
+
+Significance level: α = 0.1
+
+tcrit t0.95,100 = 1.66
+
+|t| = 2.26 
+
+|t| > tcrit
+
+We can reject H0 since t is larger than tcrit. This means that education have an effect on regional inequality.
+
+##### Motorway
+
+```{r}
+#| label: tbl-inference-motorway
+#| tbl-cap: Motorway linear model
+lm(gini ~ motorway , data=germany2010) %>% tidy()%>% kable(., digits=2)
+```
+
+H0: βMotorway = 0  
+
+Ha: βMotorway  ≠ 0 
+
+Significance level: α = 0.1
+
+tcrit t0.95,100 = 1.66
+
+|t| = 0.65
+
+|t| < tcrit
+
+We can not reject H0 since t is smaller than tcrit. This means that motorway does not have an effect on regional inequality.
+
+##### Life expectancy age
+
+```{r}
+#| label: tbl-inference-lifexp
+#| tbl-cap: Life expectancy age linear model
+lm(gini ~ lifeexpectancyage, data=germany2010) %>% tidy()%>% kable(., digits=4)
+#qt(0.95,100)
+```
+
+H0: βLifeexpectancy = 0  
+
+Ha: βLifeexpectancy  ≠ 0 
+
+Significance level: α = 0.1
+
+tcrit t0.95,100 = 1.6602
+
+|t| = 1.6605
+
+|t| > tcrit
+
+We can reject H0 since t is larger than tcrit. This means that life expectancy age have an effect on regional inequality.
+
+
 
 
 ## References
