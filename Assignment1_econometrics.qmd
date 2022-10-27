@@ -719,7 +719,7 @@ This emphasizes that there is a discrepancy between the model and the variables 
 lm_function_plot(finland2010)
 ```
 
-In the plot for Finland we see that the points are placed close to the regression line.
+In @fig-estimate-finland we see that the points are placed close to the regression line.
 At first glance, it appears that the model has a strong goodness to fit.
 But due to very little data for the selected country to compare, it is difficult to describe the real relationship from the plot.
 
@@ -739,13 +739,13 @@ lm_residuals_plot(germany2010)
 
 ```{r}
 #| label: fig-residuals-finland
-#| fig-cap: Residuals Germany
+#| fig-cap: Residuals Finland
 lm_residuals_plot(finland2010)
 ```
 
 ```{r}
 #| label: fig-residuals-romania
-#| fig-cap: Residuals Germany
+#| fig-cap: Residuals Romania
 lm_residuals_plot(romania2010)
 ```
 
