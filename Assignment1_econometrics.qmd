@@ -727,6 +727,12 @@ But due to very little data for the selected country to compare, it is difficult
 lm_function_plot(romania2010)
 ```
 
+Romania's correlation is 0.361.
+In @fig-estimate-romania it appears that the data points are relatively scattered, and with wide distances to the regression line.
+We also notice that Romania has few data points compared to Germany, but more than Finland.
+The amount of data is important for how well the model adapts to the variables.
+An important point to note is that the more data available, the more accurate the result and the smaller the margin of error.
+
 #### Plot the residuals against the predicted values of your model.
 
 ```{r}
@@ -749,26 +755,28 @@ lm_residuals_plot(romania2010)
 
 #### Classical assumptions OLS
 
-Classical assumptions OLS consists of six points
+Ordinary Least Squares (OLS) is the most common estimation method for linear models.
+Classical assumptions for OLS consists of six points.
+If the regression model satisfies the OLS assumptions, estimates will be generated that are relatively close to the true values.
+This means that the estimates that appears is reliable.
+Below we will list the six assumptions for OLS:
 
-1.  Linearity: The population relationship is linear in parameters with an additive error term.\
-2.  SLR: Sample Variation: There is variation in X
-3.  Random Sampling: We have a random sample from the population of interest.\
-4.  Exogeneity: The variable is exogenous\
-5.  Homoskedasticity: The error term has the same variance for each value of the independent variable
-6.  Normality: The population error term is normally distributed with mean zero and variance
+1.  Linearity: The population relationship is linear in parameters with an additive error term.
+2.  SLR: Sample Variation: There is variation in X.
+3.  Random Sampling: We have a random sample from the population of interest.
+4.  Exogeneity: The variable is exogenous.
+5.  Homoskedasticity: The error term has the same variance for each value of the independent variable.
+6.  Normality: The population error term is normally distributed with mean zero and variance.
 
--- how is this in relation to our data and findings?
---
+## How is this in relation to our data and findings?
 
 ### Other derterminants of inequality
 
 We have chosen the following variables to explore in relationship to regional inequality GINIW:
 
-Life expectancy age in years (demographics category) Amount of motorway in kilometers per thousand square kilometers.
-(transport infrastructure category) Amount of persons with higher education in percent (education category)
+Life expectancy age in years (demographics category), Amount of motorway in kilometers per thousand square kilometers (transport infrastructure category) and Amount of persons with higher education in percent (education category).
 
-The reason for choosing these variables are that they could possibly be used indicate how well developed or wealthy the region is.
+The reason we chose these variables is that the data has the opportunity to indicate how well developed or wealthy the regions are.
 
 ```{r}
 data2010 %>%
@@ -808,8 +816,13 @@ lm.5 = lm(gini ~ eduval + lifeexpectancyage, mlrdata)
 multi_linear_regression_model_1(germany2010)
 ```
 
-@tbl-mlr-germany shows that R2 is highest for model 3 which is a combination of education and motorway.
-Model 2 which is motorway alone gives a very low R2.
+From the table we see the coefficient R2 which can tell us the fit to the model.
+@tbl-mlr-germany shows the highest value of R2 in model 3.
+This model is a combination of the education and motorway data.
+It is interesting that the coefficient R2 is higher in the models where data are combined.
+This can be thought to be related to the fact that the more data that is included, the better the model is adapted to the variables.
+The variables that are isolated alone and contain only data from one source have a low coefficient value.
+We see this emerging from models 2 and 4.
 
 #### Finland
 
@@ -819,8 +832,11 @@ Model 2 which is motorway alone gives a very low R2.
 multi_linear_regression_model_1(finland2010)
 ```
 
-As we already mentioned the data set for Finland only gives us 3 values/regions for 2010.
-@tbl-mlr-finland shows a high value for R2 with model 1,3,4 and 5 however we cant conclude anything useful with so little data.
+Throughout the assignment there is a following problem related to lack of data for Finland.
+For the year 2010, there are only three data points with information.
+From the table @tbl-mlr-finland we see that both models 1, 3, 4 and 5 have high values for R2.
+Two of the models (3 and 5) have a coefficient of 1, indicating perfect fit to the variable.
+But our problem with the data for Finland is that it is not possible to draw conclusions and produce results that are relevant due to the great lack of data.
 
 #### Romania
 
@@ -830,7 +846,10 @@ As we already mentioned the data set for Finland only gives us 3 values/regions 
 multi_linear_regression_model_1(romania2010)
 ```
 
-Romania also have very few regions with data for 2010 and R2 in @tbl-mlr-romania seems to be almost the same for any model in our estimate.
+We can draw similarities between Finland and Romania in the tables shown above.
+In both countries there is little available data for the year 2010, although Romania has slightly more data points than Finland.
+We see from the table @tbl-mlr-romania that all the models have relatively similar values for R2 in our estimate.
+This means that there are no models that stand out more than others, and it becomes difficult to draw any conclusions from this.
 
 #### Overall fit
 
@@ -841,7 +860,16 @@ This can maybe give similar results as our estimate for the effect regional deve
 
 #### Inference
 
--- theory for using hypothesis testing for inference --
+Furthermore, we will test whether the variables from earlier have an effect on growth and inequality in the county Germany for the year 2010.
+Due to the lack of data for Finland and Romania in the selected year, we do not see it as relevant to include these countries in the investigation related to inference.
+
+We use hypothesis testing to calculate the effect of the variables.
+Hypothesis testing is a form of statistical inference that uses data from a sample to draw conclusions.
+First, an assumption is made about the distribution.
+This is called the null hypothesis and referred to as H0.
+Furthermore, an alternative hypothesis is defined, which stands in opposition to H0.
+By testing, we arrive at whether H0 should be rejected or not.
+Below we will show which of the hypothetical tests we have carried out on the variables and conclude which of the hypotheses are true.
 
 ##### Education
 
@@ -863,8 +891,10 @@ tcrit t0.95,100 = 1.66
 
 \|t\| \> tcrit
 
-We can reject H0 since t is larger than tcrit.
-This means that education have an effect on regional inequality.
+The investigations above shows that in this case we can reject H0.
+We see that t is larger than tcrit.
+This indicates that education has an effect on regional inequality.
+The statistical conclusion is that it is the alternative hypothesis that is true, and we reject H0.
 
 ##### Motorway
 
@@ -886,8 +916,9 @@ tcrit t0.95,100 = 1.66
 
 \|t\| \< tcrit
 
-We can not reject H0 since t is smaller than tcrit.
-This means that motorway does not have an effect on regional inequality.
+When we look at the effect of the variable motorway on the regional inequality, the investigations shows that the value of t is smaller than tcrit.
+In this case we can not reject the null hypothesis H0 in favour of Ha.
+We can conclude that the motorway variable has no effect on regional inequality.
 
 ##### Life expectancy age
 
@@ -910,8 +941,11 @@ tcrit t0.95,100 = 1.6602
 
 \|t\| \> tcrit
 
-We can reject H0 since t is larger than tcrit.
-This means that life expectancy age have an effect on regional inequality.
+The last variable tested is life expectancy age.
+We see that the t value is larger than tcrit.
+Thus, we can reject the H0 hypothesis.
+By rejecting H0, we can conclude that it is the alternative hypothesis that is true.
+This shows that life expectancy age have an effect on regional inequality.
 
 ## References
 
