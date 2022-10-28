@@ -860,7 +860,14 @@ This can maybe give similar results as our estimate for the effect regional deve
 
 #### Inference
 
--- theory for using hypothesis testing for inference --
+Furthermore, we will test whether the variables from earlier have an effect on growth and inequality in the three countries Germany, Finland and Romania.
+We use hypothesis testing to calculate the effect of the variables.
+Hypothesis testing is a form of statistical inference that uses data from a sample to draw conclusions.
+
+First, an assumption is made about the distribution, this is called the null hypothesis and referred to as H0.
+Furthermore, an alternative hypothesis is defined, which stands in opposition to H0.
+By testing, we arrive at whether H0 should be rejected or not.
+Below we will show which of the hypothetical tests we have carried out on the variables and conclude which of the hypotheses are true.
 
 ##### Education
 
@@ -882,8 +889,10 @@ tcrit t0.95,100 = 1.66
 
 \|t\| \> tcrit
 
-We can reject H0 since t is larger than tcrit.
-This means that education have an effect on regional inequality.
+The investigations above shows that in this case we can reject H0.
+We see that t is larger than tcrit.
+This indicates that education has an effect on regional inequality.
+The statistical conclusion is that it is the alternative hypothesis that is true, and we reject H0.
 
 ##### Motorway
 
@@ -905,8 +914,9 @@ tcrit t0.95,100 = 1.66
 
 \|t\| \< tcrit
 
-We can not reject H0 since t is smaller than tcrit.
-This means that motorway does not have an effect on regional inequality.
+When we look at the effect of the variable motorway on the regional inequality, the investigations shows that the value of t is smaller than tcrit.
+In this case we can not reject the null hypothesis H0 in favour of Ha.
+We can conclude that the motorway variable has no effect on regional inequality.
 
 ##### Life expectancy age
 
@@ -929,8 +939,11 @@ tcrit t0.95,100 = 1.6602
 
 \|t\| \> tcrit
 
-We can reject H0 since t is larger than tcrit.
-This means that life expectancy age have an effect on regional inequality.
+The last variable tested is life expectancy age.
+We see that the t value is larger than tcrit.
+Thus, we can reject the H0 hypothesis.
+By rejecting H0, we can conclude that it is the alternative hypothesis that is true.
+This shows that life expectancy age have an effect on regional inequality.
 
 ## References
 
