@@ -726,7 +726,12 @@ But due to very little data for the selected country to compare, it is difficult
 #| fig-cap: Estimate for Romania
 lm_function_plot(romania2010)
 ```
-Romania's correlation is 0.361. In @fig-estimate-romania it appears that the data points are relatively scattered, and with wide distances to the regression line. We also notice that Romania has few data points compared to Germany, but more than Finland. The amount of data is important for how well the model adapts to the variables. An important point to note is that the more data available, the more accurate the result and the smaller the margin of error.
+
+Romania's correlation is 0.361.
+In @fig-estimate-romania it appears that the data points are relatively scattered, and with wide distances to the regression line.
+We also notice that Romania has few data points compared to Germany, but more than Finland.
+The amount of data is important for how well the model adapts to the variables.
+An important point to note is that the more data available, the more accurate the result and the smaller the margin of error.
 
 #### Plot the residuals against the predicted values of your model.
 
@@ -750,16 +755,20 @@ lm_residuals_plot(romania2010)
 
 #### Classical assumptions OLS
 
-Classical assumptions OLS consists of six points
+Ordinary Least Squares (OLS) is the most common estimation method for linear models.
+Classical assumptions for OLS consists of six points.
+If the regression model satisfies the OLS assumptions, estimates will be generated that are relatively close to the true values.
+This means that the estimates that appears is reliable.
+Below we will list the six assumptions for OLS:
 
-1.  Linearity: The population relationship is linear in parameters with an additive error term.\
+1.  Linearity: The population relationship is linear in parameters with an additive error term.
 2.  SLR: Sample Variation: There is variation in X
-3.  Random Sampling: We have a random sample from the population of interest.\
-4.  Exogeneity: The variable is exogenous\
+3.  Random Sampling: We have a random sample from the population of interest.
+4.  Exogeneity: The variable is exogenous
 5.  Homoskedasticity: The error term has the same variance for each value of the independent variable
 6.  Normality: The population error term is normally distributed with mean zero and variance
 
-## -- how is this in relation to our data and findings?
+## How is this in relation to our data and findings?
 
 ### Other derterminants of inequality
 
