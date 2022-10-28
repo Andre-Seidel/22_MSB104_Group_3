@@ -846,7 +846,10 @@ But our problem with the data for Finland is that it is not possible to draw con
 multi_linear_regression_model_1(romania2010)
 ```
 
-Romania also have very few regions with data for 2010 and R2 in @tbl-mlr-romania seems to be almost the same for any model in our estimate.
+We can draw similarities between Finland and Romania in the tables shown above.
+In both countries there is little available data for the year 2010, although Romania has slightly more data points than Finland.
+We see from the table @tbl-mlr-romania that all the models have relatively similar values for R2 in our estimate.
+This means that there are no models that stand out more than others, and it becomes difficult to draw any conclusions from this.
 
 #### Overall fit
 
