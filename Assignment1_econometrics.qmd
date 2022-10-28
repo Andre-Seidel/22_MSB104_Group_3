@@ -283,6 +283,8 @@ We present the results in a plot, where we collect GDP per capita for all three 
 This provides a clear presentation of the results, and simplifies the process of comparing the countries' level of GDP per capita.
 
 ```{r calculate-gdp-per-capita}
+#| label: fig-gdp-per-capita
+#| fig-cap: GDP per capita
 gdppercapita_total <- gdpdata %>%
   select(Year, Region, GDP, unit) %>%
   filter(unit =='MIO_EUR' & (Region %in% c("DE", "FI", "RO"))) %>%
@@ -659,6 +661,8 @@ Regression analysis is a statistical analysis method for describing the relation
 Wee look at the data we have for the year 2010 on our selected countries, and estimate the effect of regional development on regional inequality using a simple regression model.
 
 ```{r}
+#| label: tbl-log-gdppc
+#| tbl-cap: Estimate effect of regional development on regional inequality
 lm.1 = lm(gini ~ log_gdppc, data = germany2010)
 lm.2 = lm(gini ~ log_gdppc, data = finland2010)
 lm.3 = lm(gini ~ log_gdppc, data = romania2010)
@@ -696,42 +700,66 @@ If we assume that a randomized control trial usually will give R2 \< 0.1 will ou
 Furthermore we will present the estimates plotted for each country.
 
 ```{r}
+#| label: fig-lm-germany
+#| fig-cap: Estimate for Germany
 lm_function_plot(germany2010)
 ```
 
-From the plot, we see that there are a number of data points for Germany.
+From @fig-lm-germany, we see that there are a number of data points for Germany.
 This agrees with the number that appears as N = 33 in the regression analysis above.
 Germany had a coefficient of determination of 0.376.
 Based on the plot, we see that the data points are spread out from the line.
 This emphasizes that there is a discrepancy between the model and the variables that have been analyzed.
 
 ```{r}
+#| label: fig-estimate-finland
+#| fig-cap: Estimate for Finland
 lm_function_plot(finland2010)
 ```
 
-In the plot for Finland we see that the points are placed close to the regression line.
+In @fig-estimate-finland we see that the points are placed close to the regression line.
 At first glance, it appears that the model has a strong goodness to fit.
 But due to very little data for the selected country to compare, it is difficult to describe the real relationship from the plot.
 
 ```{r}
+#| label: fig-estimate-romania
+#| fig-cap: Estimate for Romania
 lm_function_plot(romania2010)
 ```
 
 #### Plot the residuals against the predicted values of your model.
 
 ```{r}
+#| label: fig-residuals-germany
+#| fig-cap: Residuals Germany
 lm_residuals_plot(germany2010)
 ```
 
 ```{r}
+#| label: fig-residuals-finland
+#| fig-cap: Residuals Finland
 lm_residuals_plot(finland2010)
 ```
 
 ```{r}
+#| label: fig-residuals-romania
+#| fig-cap: Residuals Romania
 lm_residuals_plot(romania2010)
 ```
 
-#### Discus the classical assumptions OLS in light of your data and plots
+#### Classical assumptions OLS
+
+Classical assumptions OLS consists of six points
+
+1.  Linearity: The population relationship is linear in parameters with an additive error term.\
+2.  SLR: Sample Variation: There is variation in X
+3.  Random Sampling: We have a random sample from the population of interest.\
+4.  Exogeneity: The variable is exogenous\
+5.  Homoskedasticity: The error term has the same variance for each value of the independent variable
+6.  Normality: The population error term is normally distributed with mean zero and variance
+
+-- how is this in relation to our data and findings?
+--
 
 ### Other derterminants of inequality
 
@@ -774,33 +802,116 @@ lm.5 = lm(gini ~ eduval + lifeexpectancyage, mlrdata)
 
 #### Germany
 
-Estimate multiple linear regression model for germany on the effect the new variables have on gini
-
 ```{r}
+#| label: tbl-mlr-germany
+#| tbl-cap: Multi linear regression model Germany
 multi_linear_regression_model_1(germany2010)
 ```
 
+@tbl-mlr-germany shows that R2 is highest for model 3 which is a combination of education and motorway.
+Model 2 which is motorway alone gives a very low R2.
+
 #### Finland
 
-Estimate multiple linear regression model for Finland on the effect the new variables have on gini
-
 ```{r}
+#| label: tbl-mlr-finland
+#| tbl-cap: Multi linear regression model Finland
 multi_linear_regression_model_1(finland2010)
 ```
 
+As we already mentioned the data set for Finland only gives us 3 values/regions for 2010.
+@tbl-mlr-finland shows a high value for R2 with model 1,3,4 and 5 however we cant conclude anything useful with so little data.
+
 #### Romania
 
-Estimate multiple linear regression model for Romania on the effect the new variables have on gini
-
 ```{r}
+#| label: tbl-mlr-romania
+#| tbl-cap: Multi linear regression model Romania
 multi_linear_regression_model_1(romania2010)
 ```
 
-Estimate a multiple linear regression model with you new variables for 2010 and give a small interpretation of your findings.
+Romania also have very few regions with data for 2010 and R2 in @tbl-mlr-romania seems to be almost the same for any model in our estimate.
 
-Discuss the overall fit of your model
+#### Overall fit
 
-Discuss the inference related to your findings
+Since both Finland and Romania have very little data for 2010 it may only be Germany we can use to a reasonable attempt to check for goodness of fit for our model estimate.
+Maybe there is a certain fit for education and motorway in combination having an effect on regional inequality for Germany.
+Both variables should have some connection with how well developed and wealthy a region is.
+This can maybe give similar results as our estimate for the effect regional development have on regional inequality.
+
+#### Inference
+
+-- theory for using hypothesis testing for inference --
+
+##### Education
+
+```{r}
+#| label: tbl-inference-education
+#| tbl-cap: Education linear model
+lm(gini ~ eduval , data=germany2010) %>% tidy()%>% kable(., digits=2)
+```
+
+H0: βEducation = 0
+
+Ha: βEducation ≠ 0
+
+Significance level: α = 0.1
+
+tcrit t0.95,100 = 1.66
+
+\|t\| = 2.26
+
+\|t\| \> tcrit
+
+We can reject H0 since t is larger than tcrit.
+This means that education have an effect on regional inequality.
+
+##### Motorway
+
+```{r}
+#| label: tbl-inference-motorway
+#| tbl-cap: Motorway linear model
+lm(gini ~ motorway , data=germany2010) %>% tidy()%>% kable(., digits=2)
+```
+
+H0: βMotorway = 0
+
+Ha: βMotorway ≠ 0
+
+Significance level: α = 0.1
+
+tcrit t0.95,100 = 1.66
+
+\|t\| = 0.65
+
+\|t\| \< tcrit
+
+We can not reject H0 since t is smaller than tcrit.
+This means that motorway does not have an effect on regional inequality.
+
+##### Life expectancy age
+
+```{r}
+#| label: tbl-inference-lifexp
+#| tbl-cap: Life expectancy age linear model
+lm(gini ~ lifeexpectancyage, data=germany2010) %>% tidy()%>% kable(., digits=4)
+#qt(0.95,100)
+```
+
+H0: βLifeexpectancy = 0
+
+Ha: βLifeexpectancy ≠ 0
+
+Significance level: α = 0.1
+
+tcrit t0.95,100 = 1.6602
+
+\|t\| = 1.6605
+
+\|t\| \> tcrit
+
+We can reject H0 since t is larger than tcrit.
+This means that life expectancy age have an effect on regional inequality.
 
 ## References
 
