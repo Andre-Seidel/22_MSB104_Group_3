@@ -816,7 +816,7 @@ lm.5 = lm(gini ~ eduval + lifeexpectancyage, mlrdata)
 multi_linear_regression_model_1(germany2010)
 ```
 
-From the plot we see the coefficient R2 which can tell us the fit to the model.
+From the table we see the coefficient R2 which can tell us the fit to the model.
 @tbl-mlr-germany shows shows the highest value of R2 in model 3.
 This model is a combination of the education and motorway data.
 It is interesting that the coefficient R2 is higher in the models where data are combined.
@@ -832,8 +832,11 @@ We see this emerging from models 2 and 4.
 multi_linear_regression_model_1(finland2010)
 ```
 
-As we already mentioned the data set for Finland only gives us 3 values/regions for 2010.
-@tbl-mlr-finland shows a high value for R2 with model 1,3,4 and 5 however we cant conclude anything useful with so little data.
+Throughout the assignment there is a following problem related to lack of data for Finland.
+For the year 2010, there are only three data points with information.
+From the table @tbl-mlr-finland we see that both models 1, 3, 4 and 5 have high values for R2.
+Two of the models (3 and 5) have a coefficient of 1, indicating perfect fit to the variable.
+But our problem with the data for Finland is that it is not possible to draw conclusions and produce results that are relevant due to the great lack of data.
 
 #### Romania
 
